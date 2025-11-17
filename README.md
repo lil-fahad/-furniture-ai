@@ -1,33 +1,39 @@
-# Furniture AI System PRO — All-in-One Edition
+# Furniture AI System
 
-This repository bundles a FastAPI backend, a lightweight AI engine mock, and a React frontend for experimenting with AI-assisted furniture design. The backend exposes routes to generate furniture previews and blueprints, while the AI engine mocks detection and recommendation endpoints.
+End-to-end automation for blueprint analysis, furniture recommendation, and 3D layout synthesis. The stack includes FastAPI services, automation scripts for datasets and training, and a Vite React frontend.
 
-## Project Layout
-- `app/backend`: FastAPI backend with preview and blueprint routes.
-- `app/ai_engine`: AI engine mock service with detection and recommendation endpoints.
-- `app/frontend`: React client scaffolded for Vite.
-- `app/infra/docker`: Docker Compose template to run the services together.
+## Structure
+- `backend/` — FastAPI app with analysis, recommendation, and 3D layout routes.
+- `frontend/` — Vite React client with blueprint upload, detection, recommendations, and 3D viewer pages.
+- `scripts/` — Automation for datasets, training, syncing, and cron orchestration.
+- `models/` — Trained model artifacts and checkpoints.
+- `datasets/` — Downloaded and processed datasets.
 
-## Running Locally
-1. Create a virtual environment and install backend dependencies:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install -r app/backend/requirements.txt
-   ```
-2. Launch the backend API:
-   ```bash
-   uvicorn app.backend.main:app --reload
-   ```
-3. Launch the AI engine (optional mock service):
-   ```bash
-   uvicorn app.ai_engine.main:app --reload --port 8001
-   ```
-4. For the frontend, install dependencies with `npm install` and start Vite via `npm run dev`.
+## Backend
+Install dependencies and run locally:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn backend.main:app --reload
+```
 
-## API Quickstart
-- `GET /api/v1/health` — service health check.
-- `POST /api/v1/furniture/preview` — generate preview instructions for a furniture concept.
-- `POST /api/v1/blueprints` — build a simple blueprint outline given a name, style, and materials.
+## Frontend
+Install dependencies and start the Vite dev server:
+```bash
+npm install
+npm run dev -- --host
+```
 
-The mock AI engine provides `POST /detect` and `POST /recommend` endpoints for basic testing.
+## Automation
+- `python scripts/datasets/fetch.py` — clone example datasets.
+- `python scripts/datasets/preprocess.py` — normalize images and create YOLO labels.
+- `python scripts/datasets/build_furniture.py` — build furniture catalog CSV.
+- `python scripts/datasets/build_3d.py` — generate sample meshes.
+- `python scripts/train/train_yolo.py` — create YOLO weights and report placeholders.
+- `python scripts/train/train_recommender.py` — train recommender baseline.
+- `python scripts/train/train_3d.py` — train 3D layout stub.
+- `python scripts/auto/update.py` — fetch and preprocess datasets.
+- `python scripts/auto/train.py` — run scheduled training and checkpoints.
+- `python scripts/auto/sync.py` — pull, commit, and push changes.
+- `python scripts/cron/cron.py` — simple scheduler for update/train/sync.
