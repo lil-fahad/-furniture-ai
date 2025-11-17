@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ../backend
+    command: uvicorn app.backend.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+  ai:
+    build: ../ai_engine
+    command: uvicorn app.ai_engine.main:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+  frontend:
+    build: ../frontend
+    command: npm run dev -- --host --port 5173
+    ports:
+      - "5173:5173"
