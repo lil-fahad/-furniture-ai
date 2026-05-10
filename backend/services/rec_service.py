@@ -15,6 +15,7 @@ from backend.models.pydantic_schemas import (
 )
 from backend.services.ikea_service import get_ikea_service
 from backend.services.alibaba_service import get_alibaba_service
+from backend.services.dashscope_service import get_dashscope_service
 
 logger = logging.getLogger("furniture_ai")
 
@@ -142,6 +143,7 @@ class RecommenderService:
     def __init__(self) -> None:
         self.ikea = get_ikea_service()
         self.alibaba = get_alibaba_service()
+        self.ai = get_dashscope_service()
 
     def recommend(self, req: RecommendRequest) -> List[FurnitureRecommendation]:
         sources = req.preferred_sources or ["ikea", "alibaba"]
@@ -170,7 +172,22 @@ class RecommenderService:
             count = seen_categories.get(cat, 0)
             if count < 2:
                 seen_categories[cat] = count + 1
-                reason = _build_reason(product, req.style, req.budget)
+
+                # Use Qwen AI for a personalised reason; fall back to rule-based
+                try:
+                    reason = self.ai.generate_recommendation_reason(
+                        product_name=product.name,
+                        product_category=product.category,
+                        product_styles=product.styles or [],
+                        product_price=product.price,
+                        user_style=req.style,
+                        user_budget=req.budget,
+                        user_rooms=req.rooms,
+                        score=score,
+                    )
+                except Exception:
+                    reason = _build_reason(product, req.style, req.budget)
+
                 rec = FurnitureRecommendation(
                     product=product,
                     score=score,
@@ -178,7 +195,12 @@ class RecommenderService:
                     item_id=product.item_id,
                     name=product.name,
                     category=product.category,
-                    metadata={"style": req.style, "budget": req.budget, "source": product.source},
+                    metadata={
+                        "style": req.style,
+                        "budget": req.budget,
+                        "source": product.source,
+                        "ai_reason": True,
+                    },
                 )
                 results.append(rec)
             if len(results) >= 12:

@@ -10,6 +10,11 @@ class Settings(BaseSettings):
     layout_model_path: Path = Path("models/layout3d/model.pt")
     checkpoints_dir: Path = Path("models/checkpoints")
 
+    # Alibaba Cloud DashScope (Qwen LLM) API key
+    dashscope_api_key: str = "sk-jiE5MMqap0qaDYmgaVDztDp1NIOfbD64BEF934C8811F195192E838AA5C076"
+    dashscope_model: str = "qwen-turbo"
+    dashscope_base_url: str = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+
     class Config:
         env_prefix = "FURNITURE_"
         env_file = ".env"

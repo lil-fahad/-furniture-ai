@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api import analyze, recommend, layout3d, catalog
+from backend.api import analyze, recommend, layout3d, catalog, ai_assist
 from backend.models.pydantic_schemas import HealthResponse
 from backend.core.config import get_settings
 from backend.logging.logger import logger
@@ -26,6 +26,7 @@ app.include_router(analyze.router)
 app.include_router(recommend.router)
 app.include_router(layout3d.router)
 app.include_router(catalog.router)
+app.include_router(ai_assist.router)
 
 
 @app.get("/health", response_model=HealthResponse)
