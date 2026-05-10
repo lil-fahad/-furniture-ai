@@ -4,7 +4,7 @@ import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping, Sequence, Optional
+from typing import Mapping, Sequence, Optional, Union
 from urllib.parse import urlparse
 
 
@@ -25,7 +25,7 @@ class FullAIPipeline:
     confines filesystem access to locations inside the repository.
     """
 
-    def __init__(self, base: Optional[str | Path] = None, datasets_subdir: str = "datasets"):
+    def __init__(self, base: Optional[Union[str, Path]] = None, datasets_subdir: str = "datasets"):
         self.base = Path(base) if base else Path(__file__).resolve().parents[1]
         self.base = self.base.resolve()
         self.datasets = (self.base / datasets_subdir).resolve()
@@ -56,7 +56,7 @@ class FullAIPipeline:
         target.mkdir(parents=True, exist_ok=True)
         return target
 
-    def _ensure_within_base(self, path: str | Path, *, allow_nonexistent: bool = False) -> Path:
+    def _ensure_within_base(self, path: Union[str, Path], *, allow_nonexistent: bool = False) -> Path:
         resolved = (self.base / path).resolve()
         if self.base not in resolved.parents and resolved != self.base:
             raise PipelineError("Path escapes repository boundary")
@@ -77,7 +77,7 @@ class FullAIPipeline:
             results[name] = {"status": "cloned", "path": str(target), "stdout": command_result.stdout}
         return results
 
-    def transform(self, folder: str, instruction: str, script_path: Optional[str | Path] = None) -> Path:
+    def transform(self, folder: str, instruction: str, script_path: Optional[Union[str, Path]] = None) -> Path:
         target_dir = self._safe_dataset_folder(folder)
         plan_file = target_dir / "TRANSFORM_PLAN.txt"
         plan_file.write_text(
@@ -94,11 +94,11 @@ class FullAIPipeline:
             self._run_command(["python3", str(script), str(target_dir), instruction])
         return plan_file
 
-    def train_yolo(self, yaml_path: str | Path, epochs: int = 50) -> CommandResult:
+    def train_yolo(self, yaml_path: Union[str, Path], epochs: int = 50) -> CommandResult:
         config = self._ensure_within_base(yaml_path)
         return self._run_command(["yolo", "detect", "train", f"data={config}", f"epochs={epochs}", "imgsz=640"])
 
-    def train_recommender(self, csv_path: str | Path, model_out: str | Path, script_path: str | Path) -> CommandResult:
+    def train_recommender(self, csv_path: Union[str, Path], model_out: Union[str, Path], script_path: Union[str, Path]) -> CommandResult:
         data_csv = self._ensure_within_base(csv_path)
         model_path = self._ensure_within_base(model_out, allow_nonexistent=True)
         script = self._ensure_within_base(script_path)
