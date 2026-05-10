@@ -1,14 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api import analyze, recommend, layout3d
+from backend.api import analyze, recommend, layout3d, catalog
 from backend.models.pydantic_schemas import HealthResponse
 from backend.core.config import get_settings
 from backend.logging.logger import logger
 
 settings = get_settings()
 
-app = FastAPI(title=settings.app_name)
+app = FastAPI(
+    title=settings.app_name,
+    description="AI-powered furniture design from blueprints — IKEA & Alibaba integration",
+    version="2.0.0",
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,6 +25,7 @@ app.add_middleware(
 app.include_router(analyze.router)
 app.include_router(recommend.router)
 app.include_router(layout3d.router)
+app.include_router(catalog.router)
 
 
 @app.get("/health", response_model=HealthResponse)
