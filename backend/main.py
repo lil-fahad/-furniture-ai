@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api import analyze, recommend, layout3d
+from backend.api import analyze, recommend, layout3d, ai_chat
 from backend.models.pydantic_schemas import HealthResponse
 from backend.core.config import get_settings
 from backend.logging.logger import logger
@@ -20,6 +20,7 @@ app.add_middleware(
 app.include_router(analyze.router)
 app.include_router(recommend.router)
 app.include_router(layout3d.router)
+app.include_router(ai_chat.router)
 
 
 @app.get("/health", response_model=HealthResponse)

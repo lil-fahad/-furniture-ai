@@ -15,6 +15,7 @@ class Detection(BaseModel):
 class AnalyzeResponse(BaseModel):
     rooms: List[Detection]
     preview_url: Optional[str]
+    metadata: Optional[dict] = None
 
 
 class FurnitureRecommendation(BaseModel):

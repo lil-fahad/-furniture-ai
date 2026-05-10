@@ -23,4 +23,15 @@ export const generate3DLayout = async (payload) => {
   return data
 }
 
+/**
+ * Send a message to the Qwen AI assistant (Alibaba Cloud DashScope).
+ * @param {string} message  - User's question or request
+ * @param {string} [context] - Optional context string (e.g. detected rooms)
+ * @returns {{ reply: string, model: string }}
+ */
+export const aiChat = async (message, context = '') => {
+  const { data } = await client.post('/ai/chat', { message, context })
+  return data
+}
+
 export default client
