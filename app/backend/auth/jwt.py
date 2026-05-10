@@ -1,12 +1,13 @@
 import os
 import secrets
+from typing import Optional
 from datetime import datetime, timedelta
 
 DEFAULT_TTL_MINUTES = 60
 
 
 class JWTAuth:
-    def __init__(self, secret_key: str | None = None, ttl_minutes: int = DEFAULT_TTL_MINUTES) -> None:
+    def __init__(self, secret_key: Optional[str] = None, ttl_minutes: int = DEFAULT_TTL_MINUTES) -> None:
         self.secret_key = secret_key or os.environ.get("JWT_SECRET", "dev-secret")
         self.ttl_minutes = ttl_minutes
 

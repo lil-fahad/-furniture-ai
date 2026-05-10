@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import List
 
+from typing import Optional
 from app.backend.services.blueprint import BlueprintService
 from app.backend.utils.logger import log
 
 
 class FurnitureService:
-    def __init__(self, blueprint_service: BlueprintService | None = None) -> None:
+    def __init__(self, blueprint_service: Optional[BlueprintService] = None) -> None:
         self.blueprint_service = blueprint_service or BlueprintService()
 
     def generate_preview(self, name: str, style: str, materials: List[str]) -> dict:
