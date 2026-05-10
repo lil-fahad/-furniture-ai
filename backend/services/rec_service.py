@@ -31,6 +31,12 @@ class RecommenderService:
         self.catalog_path.write_text(json.dumps(fallback, indent=2))
         return fallback
 
+    def get_catalog(self) -> List[dict]:
+        return self.catalog
+
+    def get_categories(self) -> List[str]:
+        return sorted({item.get("category", "misc") for item in self.catalog})
+
     def recommend(self, req: RecommendRequest) -> List[FurnitureRecommendation]:
         seed = int(sum([ord(c) for c in req.style]))
         random.seed(seed)

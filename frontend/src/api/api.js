@@ -23,4 +23,14 @@ export const generate3DLayout = async (payload) => {
   return data
 }
 
+export const fetchCatalog = async () => {
+  const { data } = await client.get('/recommend/catalog')
+  return data
+}
+
+export const fetchCategories = async () => {
+  const { data } = await client.get('/recommend/categories')
+  return data
+}
+
 export default client

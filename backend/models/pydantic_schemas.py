@@ -49,3 +49,17 @@ class Mesh(BaseModel):
 class Layout3DResponse(BaseModel):
     meshes: List[Mesh]
     metadata: Optional[dict]
+
+
+class CatalogItem(BaseModel):
+    item_id: str
+    name: str
+    category: str
+
+
+class CatalogResponse(BaseModel):
+    items: List[CatalogItem]
+
+
+class CategoriesResponse(BaseModel):
+    categories: List[str]
