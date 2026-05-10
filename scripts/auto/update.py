@@ -10,10 +10,10 @@ def run(cmd: list[str]) -> None:
 
 
 def main() -> None:
-    run(["python", "scripts/datasets/fetch.py"])
-    run(["python", "scripts/datasets/preprocess.py"])
-    run(["python", "scripts/datasets/build_furniture.py"])
-    run(["python", "scripts/datasets/build_3d.py"])
+    run(["python3", "scripts/datasets/fetch.py"])
+    run(["python3", "scripts/datasets/preprocess.py"])
+    run(["python3", "scripts/datasets/build_furniture.py"])
+    run(["python3", "scripts/datasets/build_3d.py"])
 
 
 if __name__ == "__main__":

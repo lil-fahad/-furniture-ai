@@ -16,8 +16,11 @@ def clone_repo(name: str, url: str, target_root: Path) -> None:
         print(f"[fetch] {name} already exists, skipping")
         return
     target_root.mkdir(parents=True, exist_ok=True)
-    subprocess.check_call(["git", "clone", "--depth", "1", url, str(target)])
-    print(f"[fetch] cloned {name} -> {target}")
+    try:
+        subprocess.check_call(["git", "clone", "--depth", "1", url, str(target)])
+        print(f"[fetch] cloned {name} -> {target}")
+    except subprocess.CalledProcessError:
+        print(f"[fetch] failed to clone {name}, skipping")
 
 
 def fetch_all(root: Path = Path("datasets")) -> None:
