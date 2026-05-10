@@ -45,4 +45,30 @@ export const blueprintRecommend = async (payload) => {
   return data
 }
 
+// Alibaba Cloud DashScope AI endpoints
+export const aiChat = async (messages, systemPrompt = null) => {
+  const payload = { messages }
+  if (systemPrompt) payload.system_prompt = systemPrompt
+  const { data } = await client.post('/ai/chat', payload)
+  return data
+}
+
+export const aiRecommend = async (payload) => {
+  const { data } = await client.post('/ai/recommend', payload)
+  return data
+}
+
+export const aiBlueprintAnalysis = async (detectedRooms, style = 'modern') => {
+  const { data } = await client.post('/ai/blueprint-analysis', {
+    detected_rooms: detectedRooms,
+    style,
+  })
+  return data
+}
+
+export const aiStatus = async () => {
+  const { data } = await client.get('/ai/status')
+  return data
+}
+
 export default client

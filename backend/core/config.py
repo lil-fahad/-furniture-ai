@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 from pathlib import Path
+from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -10,9 +11,14 @@ class Settings(BaseSettings):
     layout_model_path: Path = Path("models/layout3d/model.pt")
     checkpoints_dir: Path = Path("models/checkpoints")
 
+    # Alibaba Cloud DashScope (Qwen LLM)
+    dashscope_api_key: Optional[str] = None
+    dashscope_model: str = "qwen-turbo"
+    dashscope_base_url: str = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+
     class Config:
-        env_prefix = "FURNITURE_"
         env_file = ".env"
+        extra = "ignore"
 
 
 @lru_cache()

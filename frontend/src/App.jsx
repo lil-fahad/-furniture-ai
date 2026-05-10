@@ -4,8 +4,10 @@ import FurnitureRecommend from './pages/FurnitureRecommend'
 import Auto3D from './pages/Auto3D'
 import FurnitureSearch from './pages/FurnitureSearch'
 import BlueprintRecommend from './pages/BlueprintRecommend'
+import AIChat from './pages/AIChat'
 
 const TABS = [
+  { id: 'ai', label: 'AI Assistant' },
   { id: 'blueprint', label: 'Blueprint → Furniture' },
   { id: 'search', label: 'Search Products' },
   { id: 'detect', label: 'Room Detection' },
@@ -14,7 +16,7 @@ const TABS = [
 ]
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState('blueprint')
+  const [activeTab, setActiveTab] = useState('ai')
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -44,6 +46,7 @@ const App = () => {
 
       {/* Page content */}
       <div>
+        {activeTab === 'ai' && <AIChat />}
         {activeTab === 'blueprint' && <BlueprintRecommend />}
         {activeTab === 'search' && <FurnitureSearch />}
         {activeTab === 'detect' && <RoomDetection />}

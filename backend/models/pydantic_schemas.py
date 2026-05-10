@@ -93,3 +93,47 @@ class BlueprintRecommendResponse(BaseModel):
     ikea_products: List[ExternalProduct]
     alibaba_products: List[ExternalProduct]
     ai_recommendations: List[FurnitureRecommendation]
+
+
+# ---------------------------------------------------------------------------
+# AI Chat / DashScope schemas
+# ---------------------------------------------------------------------------
+
+class ChatMessage(BaseModel):
+    role: str = Field(..., description="'user' or 'assistant'")
+    content: str
+
+
+class AIChatRequest(BaseModel):
+    messages: List[ChatMessage]
+    system_prompt: Optional[str] = None
+    temperature: float = Field(default=0.7, ge=0.0, le=2.0)
+    max_tokens: int = Field(default=1024, ge=1, le=4096)
+
+
+class AIChatResponse(BaseModel):
+    reply: str
+    model: str
+
+
+class AIRecommendRequest(BaseModel):
+    style: str = "modern"
+    budget: Optional[float] = None
+    rooms: Optional[List[str]] = None
+    detected_items: Optional[List[str]] = None
+
+
+class AIRecommendResponse(BaseModel):
+    summary: str
+    recommendations: List[dict]
+    ai_powered: bool = True
+
+
+class BlueprintAnalysisRequest(BaseModel):
+    detected_rooms: List[str]
+    style: str = "modern"
+
+
+class BlueprintAnalysisResponse(BaseModel):
+    consultation: str
+    ai_powered: bool = True
