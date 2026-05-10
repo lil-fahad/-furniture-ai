@@ -1,12 +1,14 @@
 """
 Furniture Recommendation API
 Smart recommendations based on style, budget, room type, or detected blueprint rooms.
+Powered by Alibaba Cloud AI (DashScope / Qwen) for intelligent ranking.
 """
 from fastapi import APIRouter, HTTPException, UploadFile, File
 from typing import Optional
 
 from backend.services.rec_service import get_recommender_service
 from backend.services.yolo_service import get_yolo_service
+from backend.services.alibaba_service import get_alibaba_service
 from backend.models.pydantic_schemas import (
     RecommendRequest,
     RecommendResponse,
@@ -18,6 +20,7 @@ router = APIRouter(prefix="/recommend", tags=["recommend"])
 
 rec_service = get_recommender_service()
 yolo_service = get_yolo_service()
+alibaba_service = get_alibaba_service()
 
 
 @router.post("/furniture", response_model=RecommendResponse)
@@ -145,4 +148,51 @@ async def recommend_for_room(
         )
     except Exception as exc:
         logger.exception("room recommendation failed")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/ai-summary", tags=["recommend"])
+async def ai_room_summary(
+    room_type: str,
+    style: str = "modern",
+    budget: Optional[float] = None,
+) -> dict:
+    """
+    Get an AI-generated (Alibaba Cloud / Qwen) natural language furniture
+    recommendation summary for a specific room.
+
+    - **room_type**: living_room | bedroom | kitchen | dining_room | bathroom | office
+    - **style**: Design style (modern, classic, scandinavian, industrial, minimalist, traditional, bohemian)
+    - **budget**: Budget in USD (optional)
+
+    Returns an AI-generated text summary with furniture suggestions.
+    Powered by Alibaba Cloud DashScope (Qwen model).
+    """
+    try:
+        summary = alibaba_service.get_ai_room_summary(
+            room_type=room_type,
+            style=style,
+            budget=budget,
+        )
+        if summary is None:
+            return {
+                "room_type": room_type,
+                "style": style,
+                "budget": budget,
+                "ai_summary": None,
+                "message": "Alibaba Cloud AI is not available. Check API key configuration.",
+                "ai_powered": False,
+            }
+        logger.info("AI room summary generated", extra={"room_type": room_type, "style": style})
+        return {
+            "room_type": room_type,
+            "style": style,
+            "budget": budget,
+            "ai_summary": summary,
+            "ai_powered": True,
+            "model": "qwen-plus",
+            "provider": "Alibaba Cloud DashScope",
+        }
+    except Exception as exc:
+        logger.exception("AI room summary failed")
         raise HTTPException(status_code=500, detail=str(exc))

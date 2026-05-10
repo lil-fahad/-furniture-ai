@@ -62,6 +62,7 @@ async def root() -> dict:
                 "POST /recommend/furniture": "Get furniture recommendations by style/budget",
                 "POST /recommend/blueprint": "Upload blueprint → get room-specific recommendations",
                 "POST /recommend/room": "Get recommendations for a specific room type",
+                "GET  /recommend/ai-summary": "Get AI-generated (Alibaba Cloud / Qwen) room furniture summary",
             },
             "search": {
                 "POST /search/furniture": "Search furniture by query/filters (JSON body)",

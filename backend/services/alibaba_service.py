@@ -1,13 +1,17 @@
 """
 Alibaba / AliExpress Furniture Service
 Searches Alibaba/AliExpress furniture catalog.
-Uses a rich built-in catalog with realistic Alibaba-style products.
+Uses Alibaba Cloud AI (DashScope / Qwen) API for intelligent recommendations,
+with a rich built-in catalog as fallback.
 """
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 import random
+import json
+import logging
 
 from backend.models.pydantic_schemas import FurnitureRecommendation, FurnitureSource
 from backend.logging.logger import logger
+from backend.core.config import get_settings
 
 # ─── Rich Alibaba Built-in Catalog ───────────────────────────────────────────
 ALIBABA_CATALOG: List[Dict] = [
@@ -351,12 +355,219 @@ ROOM_FURNITURE_MAP = {
 }
 
 
+class AlibabaAIClient:
+    """
+    Client for Alibaba Cloud DashScope / Qwen AI API.
+    Uses the OpenAI-compatible endpoint provided by Alibaba Cloud.
+    """
+
+    def __init__(self, api_key: str, base_url: str, model: str):
+        self.api_key = api_key
+        self.base_url = base_url.rstrip("/")
+        self.model = model
+        self._client = None
+        self._init_client()
+
+    def _init_client(self):
+        """Initialize the OpenAI-compatible client for DashScope."""
+        try:
+            from openai import OpenAI
+            self._client = OpenAI(
+                api_key=self.api_key,
+                base_url=self.base_url,
+            )
+            logger.info(
+                "Alibaba Cloud AI client initialized",
+                extra={"model": self.model, "base_url": self.base_url},
+            )
+        except ImportError:
+            logger.warning(
+                "openai package not installed; Alibaba AI features disabled. "
+                "Install with: pip install openai"
+            )
+            self._client = None
+        except Exception as exc:
+            logger.warning(f"Failed to initialize Alibaba AI client: {exc}")
+            self._client = None
+
+    def is_available(self) -> bool:
+        return self._client is not None and bool(self.api_key)
+
+    def rank_and_enrich(
+        self,
+        catalog_items: List[Dict],
+        query: str,
+        style: Optional[str] = None,
+        room_type: Optional[str] = None,
+        budget: Optional[float] = None,
+    ) -> List[Dict]:
+        """
+        Use Qwen AI to intelligently rank and enrich catalog items based on the query.
+        Returns items with AI-generated relevance scores and enhanced descriptions.
+        Falls back to catalog items unchanged if AI is unavailable.
+        """
+        if not self.is_available() or not catalog_items:
+            return catalog_items
+
+        try:
+            # Build a concise catalog summary for the AI
+            items_summary = []
+            for item in catalog_items[:20]:  # limit to 20 items for token efficiency
+                items_summary.append({
+                    "id": item["item_id"],
+                    "name": item["name"],
+                    "category": item["category"],
+                    "style": item.get("style"),
+                    "price_usd": item["price_usd"],
+                    "tags": item.get("tags", []),
+                    "room_fit": item.get("room_fit", []),
+                    "rating": item.get("rating", 4.0),
+                })
+
+            prompt = f"""You are a furniture recommendation AI for an Alibaba furniture catalog.
+Given the following furniture items and a user query, rank them by relevance and return a JSON array.
+
+User Query: "{query}"
+Style Preference: {style or 'any'}
+Room Type: {room_type or 'any'}
+Budget (USD): {budget or 'no limit'}
+
+Furniture Items:
+{json.dumps(items_summary, indent=2)}
+
+Return ONLY a valid JSON array of objects with these fields:
+- "id": the item_id string
+- "score": relevance score from 0.0 to 1.0
+- "ai_note": a brief one-sentence reason why this item matches (or doesn't)
+
+Sort by score descending. Include all items."""
+
+            response = self._client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are an expert furniture recommendation assistant. "
+                            "Always respond with valid JSON only, no markdown, no extra text."
+                        ),
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.3,
+                max_tokens=1500,
+            )
+
+            raw = response.choices[0].message.content.strip()
+            # Strip markdown code fences if present
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            raw = raw.strip()
+
+            ai_rankings = json.loads(raw)
+
+            # Build a score map from AI response
+            score_map: Dict[str, Dict] = {}
+            for entry in ai_rankings:
+                score_map[entry["id"]] = {
+                    "score": float(entry.get("score", 0.5)),
+                    "ai_note": entry.get("ai_note", ""),
+                }
+
+            # Apply AI scores to catalog items
+            enriched = []
+            for item in catalog_items:
+                item_copy = dict(item)
+                ai_data = score_map.get(item["item_id"])
+                if ai_data:
+                    item_copy["_ai_score"] = ai_data["score"]
+                    item_copy["_ai_note"] = ai_data["ai_note"]
+                else:
+                    item_copy["_ai_score"] = 0.3
+                    item_copy["_ai_note"] = ""
+                enriched.append(item_copy)
+
+            # Sort by AI score
+            enriched.sort(key=lambda x: x.get("_ai_score", 0.0), reverse=True)
+            logger.info(
+                "Alibaba AI ranking applied",
+                extra={"items_ranked": len(enriched), "model": self.model},
+            )
+            return enriched
+
+        except json.JSONDecodeError as exc:
+            logger.warning(f"Alibaba AI returned invalid JSON: {exc}")
+            return catalog_items
+        except Exception as exc:
+            logger.warning(f"Alibaba AI ranking failed, using catalog fallback: {exc}")
+            return catalog_items
+
+    def generate_room_recommendations(
+        self,
+        room_type: str,
+        style: str = "modern",
+        budget: Optional[float] = None,
+    ) -> Optional[str]:
+        """
+        Use Qwen AI to generate a natural-language furniture recommendation
+        summary for a given room type and style.
+        """
+        if not self.is_available():
+            return None
+
+        try:
+            prompt = (
+                f"Suggest the top 5 furniture pieces for a {style} {room_type.replace('_', ' ')}. "
+                f"Budget: {'$' + str(budget) if budget else 'flexible'}. "
+                "Be concise and practical. Format as a numbered list."
+            )
+
+            response = self._client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an expert interior design assistant specializing in furniture selection.",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.5,
+                max_tokens=400,
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as exc:
+            logger.warning(f"Alibaba AI room recommendation failed: {exc}")
+            return None
+
+
 class AlibabaService:
-    """Service to search and recommend Alibaba/AliExpress furniture."""
+    """Service to search and recommend Alibaba/AliExpress furniture.
+    
+    Integrates with Alibaba Cloud AI (DashScope / Qwen) for intelligent
+    ranking and enrichment of furniture recommendations.
+    """
 
     def __init__(self):
         self.catalog = ALIBABA_CATALOG
-        logger.info("Alibaba service initialized", extra={"catalog_size": len(self.catalog)})
+        settings = get_settings()
+
+        # Initialize AI client
+        self.ai_client = AlibabaAIClient(
+            api_key=settings.alibaba_api_key or "",
+            base_url=settings.alibaba_api_base_url,
+            model=settings.alibaba_ai_model,
+        )
+
+        logger.info(
+            "Alibaba service initialized",
+            extra={
+                "catalog_size": len(self.catalog),
+                "ai_enabled": self.ai_client.is_available(),
+                "ai_model": settings.alibaba_ai_model,
+            },
+        )
 
     def search(
         self,
@@ -368,48 +579,67 @@ class AlibabaService:
         room_type: Optional[str] = None,
         limit: int = 20,
     ) -> List[FurnitureRecommendation]:
-        results = []
+        # Step 1: Pre-filter catalog
+        candidates = []
         query_lower = query.lower()
 
         for item in self.catalog:
-            # Filter by category
             if category and item["category"] != category:
                 continue
-
-            # Filter by price
             if max_price and item["price_usd"] > max_price:
                 continue
             if min_price and item["price_usd"] < min_price:
                 continue
-
-            # Filter by room type
             if room_type and room_type not in item.get("room_fit", []):
                 continue
+            candidates.append(item)
 
-            # Score calculation
-            score = 0.5
-            if query_lower:
-                name_match = query_lower in item["name"].lower()
-                desc_match = query_lower in item.get("description", "").lower()
-                tag_match = any(query_lower in t for t in item.get("tags", []))
-                cat_match = query_lower in item["category"].lower()
-                if name_match:
-                    score += 0.3
-                if desc_match:
-                    score += 0.1
-                if tag_match:
-                    score += 0.2
-                if cat_match:
-                    score += 0.15
+        # Step 2: AI-powered ranking (if available and query is meaningful)
+        use_ai = bool(self.ai_client.is_available() and (query_lower or style or room_type))
+        if use_ai:
+            candidates = self.ai_client.rank_and_enrich(
+                catalog_items=candidates,
+                query=query or style or room_type or "furniture",
+                style=style,
+                room_type=room_type,
+                budget=max_price,
+            )
 
-            # Style matching
-            if style:
-                style_lower = style.lower()
-                compatible_styles = STYLE_MAP.get(style_lower, [style_lower])
-                if item.get("style") in compatible_styles:
-                    score += 0.2
+        # Step 3: Build results with scores
+        results = []
+        for item in candidates:
+            # Use AI score if available, otherwise compute heuristic score
+            if use_ai and "_ai_score" in item:
+                score = item["_ai_score"]
+            else:
+                score = 0.5
+                if query_lower:
+                    name_match = query_lower in item["name"].lower()
+                    desc_match = query_lower in item.get("description", "").lower()
+                    tag_match = any(query_lower in t for t in item.get("tags", []))
+                    cat_match = query_lower in item["category"].lower()
+                    if name_match:
+                        score += 0.3
+                    if desc_match:
+                        score += 0.1
+                    if tag_match:
+                        score += 0.2
+                    if cat_match:
+                        score += 0.15
+
+                if style:
+                    style_lower = style.lower()
+                    compatible_styles = STYLE_MAP.get(style_lower, [style_lower])
+                    if item.get("style") in compatible_styles:
+                        score += 0.2
 
             score = min(round(score, 3), 1.0)
+
+            # Build description with AI note if available
+            description = item.get("description", "")
+            ai_note = item.get("_ai_note", "")
+            if ai_note:
+                description = f"{description} | AI insight: {ai_note}" if description else ai_note
 
             source = FurnitureSource(
                 source="alibaba",
@@ -434,7 +664,7 @@ class AlibabaService:
                     name=item["name"],
                     category=item["category"],
                     score=score,
-                    description=item.get("description"),
+                    description=description,
                     style=item.get("style"),
                     sources=[source],
                     tags=item.get("tags"),
@@ -443,6 +673,7 @@ class AlibabaService:
                         "price_usd": item["price_usd"],
                         "supplier": item.get("supplier"),
                         "moq": item.get("moq", 1),
+                        "ai_powered": use_ai,
                     },
                 )
             )
@@ -457,9 +688,9 @@ class AlibabaService:
         budget: Optional[float] = None,
         limit: int = 10,
     ) -> List[FurnitureRecommendation]:
-        """Recommend furniture for a specific room type."""
+        """Recommend furniture for a specific room type using AI when available."""
         preferred_categories = ROOM_FURNITURE_MAP.get(room_type, [])
-        results = []
+        candidates = []
 
         for item in self.catalog:
             if item["category"] not in preferred_categories:
@@ -468,11 +699,35 @@ class AlibabaService:
                 continue
             if budget and item["price_usd"] > budget * 0.5:
                 continue
+            candidates.append(item)
 
-            compatible_styles = STYLE_MAP.get(style.lower(), [style.lower()])
-            style_score = 0.3 if item.get("style") in compatible_styles else 0.0
-            rating_score = (item.get("rating", 4.0) - 3.0) / 2.0 * 0.3
-            score = round(0.4 + style_score + rating_score, 3)
+        # AI-powered ranking for room recommendations
+        use_ai = bool(self.ai_client.is_available() and bool(candidates))
+        if use_ai:
+            candidates = self.ai_client.rank_and_enrich(
+                catalog_items=candidates,
+                query=f"{style} furniture for {room_type.replace('_', ' ')}",
+                style=style,
+                room_type=room_type,
+                budget=budget,
+            )
+
+        results = []
+        for item in candidates:
+            if use_ai and "_ai_score" in item:
+                score = item["_ai_score"]
+            else:
+                compatible_styles = STYLE_MAP.get(style.lower(), [style.lower()])
+                style_score = 0.3 if item.get("style") in compatible_styles else 0.0
+                rating_score = (item.get("rating", 4.0) - 3.0) / 2.0 * 0.3
+                score = round(0.4 + style_score + rating_score, 3)
+
+            score = min(round(score, 3), 1.0)
+
+            description = item.get("description", "")
+            ai_note = item.get("_ai_note", "")
+            if ai_note:
+                description = f"{description} | AI insight: {ai_note}" if description else ai_note
 
             source = FurnitureSource(
                 source="alibaba",
@@ -497,7 +752,7 @@ class AlibabaService:
                     name=item["name"],
                     category=item["category"],
                     score=score,
-                    description=item.get("description"),
+                    description=description,
                     style=item.get("style"),
                     sources=[source],
                     tags=item.get("tags"),
@@ -506,12 +761,29 @@ class AlibabaService:
                         "price_usd": item["price_usd"],
                         "supplier": item.get("supplier"),
                         "moq": item.get("moq", 1),
+                        "ai_powered": use_ai,
                     },
                 )
             )
 
         results.sort(key=lambda x: x.score, reverse=True)
         return results[:limit]
+
+    def get_ai_room_summary(
+        self,
+        room_type: str,
+        style: str = "modern",
+        budget: Optional[float] = None,
+    ) -> Optional[str]:
+        """
+        Get an AI-generated natural language furniture recommendation summary
+        for a room. Returns None if AI is not available.
+        """
+        return self.ai_client.generate_room_recommendations(
+            room_type=room_type,
+            style=style,
+            budget=budget,
+        )
 
 
 def get_alibaba_service() -> AlibabaService:
