@@ -49,3 +49,47 @@ class Mesh(BaseModel):
 class Layout3DResponse(BaseModel):
     meshes: List[Mesh]
     metadata: Optional[dict]
+
+
+# ---------------------------------------------------------------------------
+# External product schemas (IKEA / Alibaba)
+# ---------------------------------------------------------------------------
+
+class ExternalProduct(BaseModel):
+    """A product fetched from an external retailer (IKEA or Alibaba)."""
+    item_id: str
+    name: str
+    category: str
+    price: Optional[float] = None
+    currency: str = "USD"
+    image_url: Optional[str] = None
+    product_url: Optional[str] = None
+    source: str  # "ikea" | "alibaba"
+    description: Optional[str] = None
+
+
+class ProductSearchRequest(BaseModel):
+    query: str
+    category: Optional[str] = None
+    max_results: int = Field(default=10, ge=1, le=50)
+
+
+class ProductSearchResponse(BaseModel):
+    source: str
+    products: List[ExternalProduct]
+    total: int
+
+
+class BlueprintRecommendRequest(BaseModel):
+    """Request furniture recommendations based on a detected blueprint layout."""
+    style: str = "modern"
+    budget: Optional[float] = None
+    rooms: Optional[List[str]] = None
+    sources: List[str] = Field(default=["ikea", "alibaba"], description="Which stores to search")
+    max_per_source: int = Field(default=5, ge=1, le=20)
+
+
+class BlueprintRecommendResponse(BaseModel):
+    ikea_products: List[ExternalProduct]
+    alibaba_products: List[ExternalProduct]
+    ai_recommendations: List[FurnitureRecommendation]
