@@ -1,6 +1,11 @@
 from pathlib import Path
 from typing import Iterable
-from PIL import Image
+import shutil
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
 
 
 def find_images(root: Path) -> Iterable[Path]:
@@ -28,11 +33,14 @@ def normalize_images(dataset_root: Path) -> None:
         if img_path.suffix.lower() == ".svg":
             img_path = convert_svg_to_png(img_path)
         try:
-            with Image.open(img_path) as img:
-                img = img.convert("RGB")
-                target = images_dir / img_path.with_suffix(".png").name
-                img.save(target)
-                print(f"[preprocess] normalized {img_path} -> {target}")
+            target = images_dir / img_path.with_suffix(".png").name
+            if Image is not None:
+                with Image.open(img_path) as img:
+                    img = img.convert("RGB")
+                    img.save(target)
+            else:
+                shutil.copy(img_path, target)
+            print(f"[preprocess] normalized {img_path} -> {target}")
         except Exception as exc:
             print(f"[preprocess] skip {img_path}: {exc}")
 

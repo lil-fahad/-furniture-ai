@@ -20,19 +20,19 @@ def checkpoint(name: str) -> None:
 
 
 def train_recommender_daily() -> None:
-    run(["python", "scripts/train/train_recommender.py"])
+    run(["python3", "scripts/train/train_recommender.py"])
     checkpoint("recommender")
 
 
 def train_yolo_weekly() -> None:
-    run(["python", "scripts/train/train_yolo.py"])
+    run(["python3", "scripts/train/train_yolo.py"])
     checkpoint("yolo")
 
 
 def main() -> None:
     train_recommender_daily()
     train_yolo_weekly()
-    run(["python", "scripts/train/train_3d.py"])
+    run(["python3", "scripts/train/train_3d.py"])
 
 
 if __name__ == "__main__":
