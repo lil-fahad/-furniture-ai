@@ -1,0 +1,17 @@
+item_id,name,category,price
+chair-1,Modern Accent Chair,chair,120.0
+chair-2,Ergonomic Office Chair,chair,240.0
+chair-3,Wooden Dining Chair,chair,75.0
+sofa-1,Sectional Velvet Sofa,sofa,850.0
+sofa-2,Two-Seat Linen Sofa,sofa,620.0
+sofa-3,Convertible Sleeper Sofa,sofa,980.0
+table-1,Oak Dining Table,table,400.0
+table-2,Marble Coffee Table,table,320.0
+table-3,Walnut Side Table,table,150.0
+lamp-1,Arc Floor Lamp,lighting,90.0
+lamp-2,Brass Pendant Light,lighting,140.0
+lamp-3,LED Desk Lamp,lighting,55.0
+bed-1,King Platform Bed,bed,1200.0
+bed-2,Queen Upholstered Bed,bed,880.0
+shelf-1,Industrial Bookshelf,storage,260.0
+shelf-2,Modular Wall Shelf,storage,190.0

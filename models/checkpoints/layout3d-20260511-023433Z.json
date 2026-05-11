@@ -1,0 +1,17 @@
+{
+  "name": "layout3d",
+  "timestamp": "20260511-023433Z",
+  "exit": 0,
+  "metrics": {
+    "reconstruction_rmse": 0.04568818471448351,
+    "gmm_log_likelihood": 11.943908017971587,
+    "gmm_bic": -379.7698395408355,
+    "silhouette": 0.429406209907065,
+    "explained_variance": 0.9999527518698824,
+    "latent_dim": 8,
+    "n_components": 3,
+    "n_meshes": 36,
+    "target_vertices": 8,
+    "train_seconds": 0.14699954399998205
+  }
+}

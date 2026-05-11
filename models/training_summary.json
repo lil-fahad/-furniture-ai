@@ -1,0 +1,127 @@
+{
+  "started_at": "20260511-023431Z",
+  "recommender": {
+    "exit": 0,
+    "report": {
+      "started_at": "2026-05-11T02:34:31+00:00",
+      "finished_at": "2026-05-11T02:34:31+00:00",
+      "duration_seconds": 0.006113421999998536,
+      "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+      "python": "3.9.25",
+      "config": {
+        "catalog_path": "/vercel/sandbox/datasets/furniture.csv",
+        "top_k": 5,
+        "text_max_features": 4096,
+        "text_ngram": [
+          1,
+          2
+        ],
+        "price_buckets": 4,
+        "text_weight": 0.7,
+        "numeric_weight": 0.3,
+        "seed": 42,
+        "extra": {}
+      },
+      "n_items": 16,
+      "feature_dim": 92,
+      "metrics": {
+        "HitRate@K": 1.0,
+        "MRR@K": 1.0,
+        "NDCG@K": 1.0,
+        "evaluated": 16
+      },
+      "avg_price": 410.625,
+      "categories": [
+        "bed",
+        "chair",
+        "lighting",
+        "sofa",
+        "storage",
+        "table"
+      ]
+    }
+  },
+  "yolo": {
+    "exit": 0,
+    "report": {
+      "started_at": "2026-05-11T02:34:32+00:00",
+      "finished_at": "2026-05-11T02:34:32+00:00",
+      "duration_seconds": 0.05476064899994526,
+      "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+      "python": "3.9.25",
+      "config": {
+        "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+        "epochs": 50,
+        "imgsz": 640,
+        "batch": 16,
+        "patience": 10,
+        "lr0": 0.001,
+        "weight_decay": 0.0005,
+        "momentum": 0.937,
+        "optimizer": "AdamW",
+        "device": "auto",
+        "seed": 42,
+        "model_name": "yolov8n.pt",
+        "augment": true,
+        "val_split": 0.2,
+        "extra": {}
+      },
+      "backend": "sklearn-fallback",
+      "metrics": {
+        "accuracy": 0.6,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6,
+        "map50": 0.7777777777777778,
+        "train_seconds": 0.00318512199999077,
+        "n_train": 19,
+        "n_val": 5,
+        "n_classes": 2
+      },
+      "data": {
+        "images": 12,
+        "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+        "names": {
+          "0": "room"
+        }
+      }
+    }
+  },
+  "layout3d": {
+    "exit": 0,
+    "report": {
+      "started_at": "2026-05-11T02:34:33+00:00",
+      "finished_at": "2026-05-11T02:34:33+00:00",
+      "duration_seconds": 0.14699954399998205,
+      "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+      "python": "3.9.25",
+      "config": {
+        "meshes_path": "/vercel/sandbox/datasets/layout3d/meshes.json",
+        "latent_dim": 8,
+        "n_components": 3,
+        "mlp_hidden": [
+          64,
+          64
+        ],
+        "mlp_max_iter": 500,
+        "mlp_lr": 0.001,
+        "seed": 42,
+        "extra": {}
+      },
+      "metrics": {
+        "reconstruction_rmse": 0.04568818471448351,
+        "gmm_log_likelihood": 11.943908017971587,
+        "gmm_bic": -379.7698395408355,
+        "silhouette": 0.429406209907065,
+        "explained_variance": 0.9999527518698824,
+        "latent_dim": 8,
+        "n_components": 3,
+        "n_meshes": 36,
+        "target_vertices": 8,
+        "train_seconds": 0.14699954399998205
+      }
+    }
+  },
+  "duration_seconds": 1.8053026999999702,
+  "finished_at": "20260511-023433Z"
+}

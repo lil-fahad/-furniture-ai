@@ -1,0 +1,38 @@
+{
+  "started_at": "2026-05-11T02:34:31+00:00",
+  "finished_at": "2026-05-11T02:34:31+00:00",
+  "duration_seconds": 0.006113421999998536,
+  "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+  "python": "3.9.25",
+  "config": {
+    "catalog_path": "/vercel/sandbox/datasets/furniture.csv",
+    "top_k": 5,
+    "text_max_features": 4096,
+    "text_ngram": [
+      1,
+      2
+    ],
+    "price_buckets": 4,
+    "text_weight": 0.7,
+    "numeric_weight": 0.3,
+    "seed": 42,
+    "extra": {}
+  },
+  "n_items": 16,
+  "feature_dim": 92,
+  "metrics": {
+    "HitRate@K": 1.0,
+    "MRR@K": 1.0,
+    "NDCG@K": 1.0,
+    "evaluated": 16
+  },
+  "avg_price": 410.625,
+  "categories": [
+    "bed",
+    "chair",
+    "lighting",
+    "sofa",
+    "storage",
+    "table"
+  ]
+}

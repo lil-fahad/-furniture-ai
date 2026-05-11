@@ -1,0 +1,16 @@
+{
+  "name": "yolo",
+  "timestamp": "20260511-023432Z",
+  "exit": 0,
+  "metrics": {
+    "accuracy": 0.6,
+    "precision": 0.6,
+    "recall": 0.6,
+    "f1": 0.6,
+    "map50": 0.7777777777777778,
+    "train_seconds": 0.00318512199999077,
+    "n_train": 19,
+    "n_val": 5,
+    "n_classes": 2
+  }
+}

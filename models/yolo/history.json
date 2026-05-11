@@ -1,0 +1,131 @@
+[
+  {
+    "started_at": "2026-05-11T02:33:24+00:00",
+    "finished_at": "2026-05-11T02:33:24+00:00",
+    "duration_seconds": 0.05564357899993411,
+    "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+    "python": "3.9.25",
+    "config": {
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "epochs": 20,
+      "imgsz": 640,
+      "batch": 16,
+      "patience": 10,
+      "lr0": 0.001,
+      "weight_decay": 0.0005,
+      "momentum": 0.937,
+      "optimizer": "AdamW",
+      "device": "auto",
+      "seed": 42,
+      "model_name": "yolov8n.pt",
+      "augment": true,
+      "val_split": 0.2,
+      "extra": {}
+    },
+    "backend": "sklearn-fallback",
+    "metrics": {
+      "accuracy": 0.6,
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1": 0.6,
+      "map50": 0.7777777777777778,
+      "train_seconds": 0.0037921780000260696,
+      "n_train": 19,
+      "n_val": 5,
+      "n_classes": 2
+    },
+    "data": {
+      "images": 12,
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "names": {
+        "0": "room"
+      }
+    }
+  },
+  {
+    "started_at": "2026-05-11T02:34:06+00:00",
+    "finished_at": "2026-05-11T02:34:06+00:00",
+    "duration_seconds": 0.05643103300008079,
+    "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+    "python": "3.9.25",
+    "config": {
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "epochs": 50,
+      "imgsz": 640,
+      "batch": 16,
+      "patience": 10,
+      "lr0": 0.001,
+      "weight_decay": 0.0005,
+      "momentum": 0.937,
+      "optimizer": "AdamW",
+      "device": "auto",
+      "seed": 42,
+      "model_name": "yolov8n.pt",
+      "augment": true,
+      "val_split": 0.2,
+      "extra": {}
+    },
+    "backend": "sklearn-fallback",
+    "metrics": {
+      "accuracy": 0.6,
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1": 0.6,
+      "map50": 0.7777777777777778,
+      "train_seconds": 0.003199844000050689,
+      "n_train": 19,
+      "n_val": 5,
+      "n_classes": 2
+    },
+    "data": {
+      "images": 12,
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "names": {
+        "0": "room"
+      }
+    }
+  },
+  {
+    "started_at": "2026-05-11T02:34:32+00:00",
+    "finished_at": "2026-05-11T02:34:32+00:00",
+    "duration_seconds": 0.05476064899994526,
+    "platform": "Linux-5.10.174-x86_64-with-glibc2.34",
+    "python": "3.9.25",
+    "config": {
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "epochs": 50,
+      "imgsz": 640,
+      "batch": 16,
+      "patience": 10,
+      "lr0": 0.001,
+      "weight_decay": 0.0005,
+      "momentum": 0.937,
+      "optimizer": "AdamW",
+      "device": "auto",
+      "seed": 42,
+      "model_name": "yolov8n.pt",
+      "augment": true,
+      "val_split": 0.2,
+      "extra": {}
+    },
+    "backend": "sklearn-fallback",
+    "metrics": {
+      "accuracy": 0.6,
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1": 0.6,
+      "map50": 0.7777777777777778,
+      "train_seconds": 0.00318512199999077,
+      "n_train": 19,
+      "n_val": 5,
+      "n_classes": 2
+    },
+    "data": {
+      "images": 12,
+      "data_yaml": "/vercel/sandbox/datasets/sample/processed/data.yaml",
+      "names": {
+        "0": "room"
+      }
+    }
+  }
+]

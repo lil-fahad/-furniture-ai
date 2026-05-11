@@ -1,0 +1,11 @@
+{
+  "name": "recommender",
+  "timestamp": "20260511-023432Z",
+  "exit": 0,
+  "metrics": {
+    "HitRate@K": 1.0,
+    "MRR@K": 1.0,
+    "NDCG@K": 1.0,
+    "evaluated": 16
+  }
+}
