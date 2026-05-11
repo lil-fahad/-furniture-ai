@@ -1,8 +1,78 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
 }
-button:disabled {
-  opacity: 0.5;
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700
+           text-white font-semibold rounded-xl shadow-sm transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed active:scale-95;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-slate-50
+           text-slate-700 font-semibold rounded-xl border border-slate-200 shadow-sm
+           transition-all duration-200 disabled:opacity-50 active:scale-95;
+  }
+  .btn-ikea {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-ikea hover:bg-blue-700
+           text-white font-semibold rounded-lg text-sm transition-all duration-200 active:scale-95;
+  }
+  .btn-alibaba {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-alibaba hover:bg-orange-600
+           text-white font-semibold rounded-lg text-sm transition-all duration-200 active:scale-95;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-slate-100 overflow-hidden;
+  }
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm
+           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent
+           placeholder:text-slate-400 transition-all duration-150;
+  }
+  .section-title {
+    @apply text-xl font-bold text-slate-800 flex items-center gap-2;
+  }
+  .badge-ikea {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 bg-ikea-light text-ikea
+           text-xs font-semibold rounded-full;
+  }
+  .badge-alibaba {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 bg-alibaba-light text-alibaba
+           text-xs font-semibold rounded-full;
+  }
+  .tab-active {
+    @apply bg-white text-brand-600 shadow-sm font-semibold;
+  }
+  .tab-inactive {
+    @apply text-slate-500 hover:text-slate-700 font-medium;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { @apply bg-slate-100 rounded-full; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full hover:bg-slate-400; }
+
+/* Three.js canvas */
+canvas { display: block; }
+
+/* Animated gradient header */
+.hero-gradient {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0058A3 100%);
+}
+
+/* Skeleton loader */
+.skeleton {
+  @apply animate-pulse bg-slate-200 rounded-lg;
 }
