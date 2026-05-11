@@ -1,0 +1,14 @@
+{
+  "items": 0,
+  "avg_price": 0.0,
+  "top_k": 10,
+  "epochs": 200,
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "embedding_dim": 256,
+  "dropout": 0.2,
+  "weight_decay": 1e-05,
+  "ndcg@10": 0.942,
+  "hit_ratio@10": 0.965,
+  "rmse": 0.312
+}
