@@ -1,3 +1,4 @@
+from typing import Optional
 from __future__ import annotations
 
 import re
@@ -25,13 +26,13 @@ class FullAIPipeline:
     confines filesystem access to locations inside the repository.
     """
 
-    def __init__(self, base: str | Path | None = None, datasets_subdir: str = "datasets"):
+    def __init__(self, base: str | Optional[Path] = None, datasets_subdir: str = "datasets"):
         self.base = Path(base) if base else Path(__file__).resolve().parents[1]
         self.base = self.base.resolve()
         self.datasets = (self.base / datasets_subdir).resolve()
         self.datasets.mkdir(parents=True, exist_ok=True)
 
-    def _run_command(self, args: Sequence[str], *, cwd: Path | None = None, timeout: int = 300) -> CommandResult:
+    def _run_command(self, args: Sequence[str], *, cwd: Optional[Path] = None, timeout: int = 300) -> CommandResult:
         if not args:
             raise PipelineError("No command provided")
         cwd = cwd or self.base
@@ -77,7 +78,7 @@ class FullAIPipeline:
             results[name] = {"status": "cloned", "path": str(target), "stdout": command_result.stdout}
         return results
 
-    def transform(self, folder: str, instruction: str, script_path: str | Path | None = None) -> Path:
+    def transform(self, folder: str, instruction: str, script_path: str | Optional[Path] = None) -> Path:
         target_dir = self._safe_dataset_folder(folder)
         plan_file = target_dir / "TRANSFORM_PLAN.txt"
         plan_file.write_text(
