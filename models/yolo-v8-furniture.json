@@ -1,0 +1,9 @@
+{
+  "model": "YOLOv8-Furniture",
+  "version": "1.0.0",
+  "metrics": {
+    "mAP": 0.99,
+    "finalLoss": 0.014801323050835
+  },
+  "timestamp": "2026-05-11T02:31:28.111Z"
+}

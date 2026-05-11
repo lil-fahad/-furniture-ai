@@ -1,0 +1,9 @@
+{
+  "model": "Furniture-Recommender",
+  "version": "1.0.0",
+  "metrics": {
+    "precision": 0.98,
+    "finalLoss": 0.0002870542495883992
+  },
+  "timestamp": "2026-05-11T02:31:29.119Z"
+}
