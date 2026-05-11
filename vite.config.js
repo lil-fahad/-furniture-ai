@@ -6,5 +6,12 @@ export default defineConfig({
   root: 'frontend',
   build: {
     outDir: 'dist'
-  }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./frontend/src/setupTests.js'],
+    include: ['frontend/src/**/*.{test,spec}.{js,jsx}'],
+    root: '.',
+  },
 })
