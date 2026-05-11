@@ -1,6 +1,6 @@
 from pathlib import Path
 import json
-
+from typing import Optional
 
 def _default_data_yaml(root: Path = Path("datasets")) -> Path:
     for yaml_path in root.glob("*/processed/data.yaml"):
@@ -8,7 +8,7 @@ def _default_data_yaml(root: Path = Path("datasets")) -> Path:
     raise FileNotFoundError("No processed dataset with data.yaml found under datasets/")
 
 
-def train(data_yaml: Path | None = None, epochs: int = 1) -> Path:
+def train(data_yaml: Optional[Path] = None, epochs: int = 1) -> Path:
     if data_yaml is None:
         data_yaml = _default_data_yaml()
 
