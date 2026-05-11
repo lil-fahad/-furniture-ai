@@ -1,0 +1,5 @@
+path: datasets/layout3d/processed
+train: images
+val: images
+names:
+  0: room
