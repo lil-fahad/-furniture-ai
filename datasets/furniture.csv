@@ -1,0 +1,25 @@
+item_id,source,name,category,price,currency,rating,reviews,styles,colors,description
+ikea-kivik-sofa,ikea,KIVIK Sofa,sofa,799.0,USD,4.6,1842,modern|scandinavian|minimalist,beige|grey|dark blue|white,"A generous seating series with a soft, deep seat and comfortable support."
+ikea-ektorp-sofa,ikea,EKTORP Sofa,sofa,649.0,USD,4.5,2310,classic|traditional|cozy,white|beige|light grey,Traditional sofa with a timeless design and washable covers.
+ikea-poang-chair,ikea,POÄNG Armchair,chair,129.0,USD,4.7,3201,scandinavian|modern|minimalist,birch/beige|birch/black|brown/orange,Iconic layered-bent birch frame armchair with cushioned seat.
+ikea-markus-chair,ikea,MARKUS Office Chair,chair,229.0,USD,4.8,5420,modern|office|minimalist,dark grey|black,Ergonomic office chair with lumbar support and adjustable height.
+ikea-lack-table,ikea,LACK Side Table,table,19.99,USD,4.3,4100,minimalist|modern|scandinavian,black-brown|white|birch,"Simple and functional side table, perfect for small spaces."
+ikea-lisabo-table,ikea,LISABO Dining Table,table,299.0,USD,4.5,890,scandinavian|natural|modern,ash veneer|black,"Ash veneer dining table with a clean, natural look."
+ikea-kallax-shelf,ikea,KALLAX Shelf Unit,storage,109.0,USD,4.7,6780,modern|minimalist|scandinavian,white|black-brown|birch|oak,Versatile shelf unit that can be used as room divider or TV bench.
+ikea-pax-wardrobe,ikea,PAX Wardrobe,storage,249.0,USD,4.6,3450,modern|minimalist|classic,white|black-brown|oak,Customizable wardrobe system with sliding or hinged doors.
+ikea-malm-bed,ikea,MALM Bed Frame,bed,349.0,USD,4.5,4200,modern|minimalist|scandinavian,white|black-brown|oak veneer,Clean-lined bed frame with high headboard and underbed storage.
+ikea-hektar-lamp,ikea,HEKTAR Floor Lamp,lighting,79.99,USD,4.4,1230,industrial|modern|loft,dark grey|white,Industrial-style floor lamp with adjustable head.
+ikea-adum-rug,ikea,ÅDUM Rug,rug,149.0,USD,4.6,2100,cozy|modern|scandinavian,off-white|grey|beige,"High-pile rug with a soft, luxurious feel underfoot."
+ikea-micke-desk,ikea,MICKE Desk,desk,99.99,USD,4.4,3100,modern|minimalist|office,white|black-brown|oak,Compact desk with integrated cable management and drawer.
+ali-nordic-sofa-3s,alibaba,Nordic Fabric Sofa 3-Seater,sofa,320.0,USD,4.3,456,nordic|modern|minimalist,light grey|dark grey|beige|blue,"Wholesale Nordic-style 3-seater fabric sofa, MOQ 1 unit."
+ali-velvet-sofa,alibaba,Luxury Velvet Chesterfield Sofa,sofa,480.0,USD,4.5,312,luxury|classic|vintage,emerald green|navy blue|burgundy|gold,Premium velvet Chesterfield sofa with button tufting.
+ali-eames-replica-chair,alibaba,Eames Style Lounge Chair & Ottoman,chair,185.0,USD,4.4,789,mid-century|modern|luxury,black/walnut|brown/walnut|white/walnut,Mid-century modern lounge chair with genuine leather and walnut shell.
+ali-mesh-office-chair,alibaba,Ergonomic Mesh Office Chair,chair,95.0,USD,4.2,1230,office|modern|ergonomic,black|grey|blue,Full mesh ergonomic chair with lumbar support and adjustable armrests.
+ali-marble-dining-table,alibaba,Marble Top Dining Table,table,420.0,USD,4.6,234,luxury|modern|italian,white marble/gold|black marble/silver,Italian marble top dining table with stainless steel base.
+ali-solid-wood-coffee-table,alibaba,Solid Wood Coffee Table,table,145.0,USD,4.5,567,rustic|natural|scandinavian,natural oak|walnut|ebony,Handcrafted solid oak coffee table with natural finish.
+ali-tv-cabinet,alibaba,Modern TV Cabinet with LED,storage,210.0,USD,4.4,890,modern|minimalist|contemporary,white|walnut|grey,Floating TV cabinet with LED strip lighting and push-open doors.
+ali-bookshelf-industrial,alibaba,Industrial Pipe Bookshelf,storage,130.0,USD,4.3,1100,industrial|loft|vintage,black/rustic brown|white/natural,5-tier industrial bookshelf with metal pipe frame and wood shelves.
+ali-upholstered-bed,alibaba,Upholstered Platform Bed,bed,380.0,USD,4.5,678,modern|luxury|contemporary,light grey|dark grey|beige|navy,King-size upholstered platform bed with tufted headboard.
+ali-pendant-light,alibaba,Nordic Pendant Light,lighting,45.0,USD,4.4,2300,nordic|minimalist|modern,black|white|gold|copper,Minimalist Nordic pendant light with E27 socket.
+ali-persian-rug,alibaba,Persian Style Area Rug,rug,89.0,USD,4.2,1560,traditional|classic|bohemian,red/gold|blue/ivory|green/beige,"Traditional Persian pattern area rug, machine washable."
+ali-standing-desk,alibaba,Electric Height-Adjustable Standing Desk,desk,265.0,USD,4.6,3400,modern|office|ergonomic,white|black|bamboo,Electric sit-stand desk with memory presets and anti-collision.
