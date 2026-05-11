@@ -3,10 +3,10 @@ from pathlib import Path
 
 REPOS = {
     "cubic5k": "https://github.com/CubiCasa/CubiCasa5k",
-    "floorplancad": "https://github.com/lambdal/CAD-floorplan",
+
     "mlstructfp": "https://github.com/MLSTRUCT/MLSTRUCT-FP",
-    "deepfloorplan": "https://github.com/zlzhaofeng/DeepFloorplan",
-    "awesomeplans": "https://github.com/diegovalsesia/awesome-floorplans",
+
+
 }
 
 
