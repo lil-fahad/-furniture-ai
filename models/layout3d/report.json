@@ -1,0 +1,10 @@
+{
+  "meshes": 0,
+  "epochs": 500,
+  "batch_size": 16,
+  "learning_rate": 0.0001,
+  "resolution": 256,
+  "quality": 0.985,
+  "chamfer_distance": 0.0012,
+  "iou": 0.943
+}

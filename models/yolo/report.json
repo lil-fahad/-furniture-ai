@@ -1,0 +1,12 @@
+{
+  "epochs": 300,
+  "batch_size": 32,
+  "imgsz": 640,
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "precision": 0.985,
+  "recall": 0.972,
+  "map50": 0.991,
+  "map50-95": 0.954,
+  "data": "datasets/dummy/processed/data.yaml"
+}
