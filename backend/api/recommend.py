@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.services.rec_service import get_recommender_service
+from backend.logger import logger
 from backend.models.pydantic_schemas import RecommendRequest, RecommendResponse
-from backend.logging.logger import logger
+from backend.services.rec_service import get_recommender_service
 
 router = APIRouter(prefix="/recommend", tags=["recommend"])
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
+from backend.logger import logger
+from backend.models.pydantic_schemas import Layout3DResponse, LayoutRequest
 from backend.services.layout_service import get_layout_service
-from backend.models.pydantic_schemas import LayoutRequest, Layout3DResponse
-from backend.logging.logger import logger
 
 router = APIRouter(prefix="/layout3d", tags=["layout3d"])
 

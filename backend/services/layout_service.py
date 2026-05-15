@@ -1,8 +1,10 @@
-from typing import List
-import uuid
+from __future__ import annotations
 
-from backend.models.pydantic_schemas import Mesh, Layout3DResponse, LayoutRequest
-from backend.logging.logger import logger
+import uuid
+from typing import List, Optional
+
+from backend.logger import logger
+from backend.models.pydantic_schemas import Layout3DResponse, LayoutRequest, Mesh
 
 
 class LayoutService:
@@ -15,8 +17,17 @@ class LayoutService:
             )
         ]
         logger.info("layout generated", extra={"mesh_count": len(meshes)})
-        return Layout3DResponse(meshes=meshes, metadata={"source": req.blueprint_url})
+        return Layout3DResponse(
+            meshes=meshes,
+            metadata={"source": req.blueprint_url or "synthetic"},
+        )
+
+
+_service: LayoutService | None = None
 
 
 def get_layout_service() -> LayoutService:
-    return LayoutService()
+    global _service
+    if _service is None:
+        _service = LayoutService()
+    return _service

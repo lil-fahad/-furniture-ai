@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import subprocess
 from pathlib import Path
 
@@ -13,9 +15,10 @@ def main() -> None:
     run(["git", "pull", "--rebase", "--autostash"])
     run(["git", "add", "-A"])
     try:
-        run(["git", "commit", "-m", "Automated sync"]) 
+        run(["git", "commit", "-m", "Automated sync"])
     except subprocess.CalledProcessError:
         print("[auto:sync] nothing to commit")
+        return
     run(["git", "push"])
 
 

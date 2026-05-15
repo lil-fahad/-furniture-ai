@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
 
@@ -14,7 +14,7 @@ class Detection(BaseModel):
 
 class AnalyzeResponse(BaseModel):
     rooms: List[Detection]
-    preview_url: Optional[str]
+    preview_url: Optional[str] = None
 
 
 class FurnitureRecommendation(BaseModel):
@@ -22,13 +22,13 @@ class FurnitureRecommendation(BaseModel):
     name: str
     category: str
     score: float
-    metadata: Optional[dict]
+    metadata: Optional[Dict[str, Any]] = None
 
 
 class RecommendRequest(BaseModel):
     style: str
-    budget: Optional[float]
-    rooms: Optional[List[str]]
+    budget: Optional[float] = None
+    rooms: Optional[List[str]] = None
 
 
 class RecommendResponse(BaseModel):
@@ -36,8 +36,8 @@ class RecommendResponse(BaseModel):
 
 
 class LayoutRequest(BaseModel):
-    blueprint_url: Optional[str]
-    rooms: Optional[List[Detection]]
+    blueprint_url: Optional[str] = None
+    rooms: Optional[List[Detection]] = None
 
 
 class Mesh(BaseModel):
@@ -48,4 +48,4 @@ class Mesh(BaseModel):
 
 class Layout3DResponse(BaseModel):
     meshes: List[Mesh]
-    metadata: Optional[dict]
+    metadata: Optional[Dict[str, Any]] = None
