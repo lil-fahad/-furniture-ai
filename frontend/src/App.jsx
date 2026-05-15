@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import BlueprintStudio from './pages/BlueprintStudio'
 import FurnitureCatalog from './pages/FurnitureCatalog'
 import DesignStudio from './pages/DesignStudio'
+import ToolDesign from './pages/ToolDesign'
 
 const NAV_TABS = [
   { id: 'blueprint', label: 'Blueprint Studio', emoji: '📐' },
   { id: 'catalog',   label: 'Furniture Catalog', emoji: '🛋️' },
   { id: 'design',    label: '3D Design Studio',  emoji: '🏠' },
+  { id: 'tool',      label: 'Tool Design',       emoji: '🛠️' },
 ]
 
 const App = () => {
@@ -59,6 +61,7 @@ const App = () => {
         {activeTab === 'blueprint' && <BlueprintStudio />}
         {activeTab === 'catalog'   && <FurnitureCatalog />}
         {activeTab === 'design'    && <DesignStudio />}
+        {activeTab === 'tool'      && <ToolDesign />}
       </main>
 
       {/* ── Footer ── */}
