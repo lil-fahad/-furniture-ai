@@ -1,7 +1,19 @@
+# ── Backend Core ──────────────────────────────────────────────────────────────
 fastapi==0.111.0
-uvicorn==0.30.0
-pillow==10.3.0
+uvicorn[standard]==0.30.0
 pydantic==2.7.1
 pydantic-settings==2.2.1
+
+# ── Image Processing ──────────────────────────────────────────────────────────
+pillow==10.3.0
 cairosvg==2.7.0
+
+# ── HTTP ─────────────────────────────────────────────────────────────────────
 httpx==0.27.0
+
+# ── Database (optional — for future persistence) ──────────────────────────────
+sqlalchemy>=2.0.0
+
+# ── ML / AI (optional — install when using real models) ──────────────────────
+# ultralytics>=8.0.0   # YOLO — uncomment when model weights are available
+# torch>=2.0.0         # PyTorch — uncomment for real training
