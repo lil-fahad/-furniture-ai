@@ -1,12 +1,14 @@
-from datetime import datetime
-from typing import List
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import List, Optional
 
 from app.backend.services.blueprint import BlueprintService
 from app.backend.utils.logger import log
 
 
 class FurnitureService:
-    def __init__(self, blueprint_service: BlueprintService | None = None) -> None:
+    def __init__(self, blueprint_service: Optional[BlueprintService] = None) -> None:
         self.blueprint_service = blueprint_service or BlueprintService()
 
     def generate_preview(self, name: str, style: str, materials: List[str]) -> dict:
@@ -16,7 +18,7 @@ class FurnitureService:
         instructions = [
             f"Model the {name} following the {style} style principles.",
             "Reinforce structural joints for durability.",
-            f"Use materials: {', '.join(materials) if materials else 'standard composites' }.",
+            f"Use materials: {', '.join(materials) if materials else 'standard composites'}.",
             "Render a 360-degree preview for review.",
         ]
 
@@ -25,5 +27,5 @@ class FurnitureService:
             "style": style,
             "materials": materials,
             "instructions": instructions + blueprint["notes"],
-            "generated_at": datetime.utcnow(),
+            "generated_at": datetime.now(timezone.utc),
         }

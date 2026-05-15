@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import Dict, List
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -13,7 +13,7 @@ furniture_service = FurnitureService(blueprint_service=blueprint_service)
 
 
 class FurnitureRequest(BaseModel):
-    name: str = Field(..., description="Furniture item name", example="Armchair")
+    name: str = Field(..., description="Furniture item name", examples=["Armchair"])
     style: str = Field("modern", description="Preferred aesthetic style")
     materials: List[str] = Field(default_factory=list, description="List of preferred materials")
 
@@ -32,7 +32,7 @@ class BlueprintResponse(BaseModel):
 
 
 @router.get("/health", tags=["system"])
-async def health() -> dict[str, str]:
+async def health() -> Dict[str, str]:
     return {"status": "ok"}
 
 

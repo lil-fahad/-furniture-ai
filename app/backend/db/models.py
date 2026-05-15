@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
 
@@ -12,7 +16,7 @@ class Furniture(Base):
     style = Column(String(50), nullable=False, default="modern")
     materials = Column(String(255), nullable=False, default="")
 
-    def material_list(self) -> list[str]:
+    def material_list(self) -> List[str]:
         return [material for material in self.materials.split(",") if material]
 
     def __repr__(self) -> str:  # pragma: no cover - representation only

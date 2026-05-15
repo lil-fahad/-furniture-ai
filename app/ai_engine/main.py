@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Dict
+
 from fastapi import FastAPI
 
 from app.ai_engine.models.recommender import Recommender
@@ -9,7 +13,7 @@ recommender = Recommender()
 
 
 @app.get("/health", tags=["system"])
-async def health() -> dict[str, str]:
+async def health() -> Dict[str, str]:
     return {"status": "ok"}
 
 
