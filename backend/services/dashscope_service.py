@@ -39,6 +39,11 @@ class DashScopeService:
         max_tokens: int = 512,
     ) -> str:
         """Send a chat completion request and return the assistant reply text."""
+        if not self._api_key:
+            raise RuntimeError(
+                "DashScope API key not configured. "
+                "Set FURNITURE_DASHSCOPE_API_KEY in your environment."
+            )
         payload = json.dumps(
             {
                 "model": self._model,
