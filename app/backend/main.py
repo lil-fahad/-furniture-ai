@@ -21,5 +21,5 @@ app.include_router(api_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["system"])
-async def root() -> dict:
+async def root() -> dict[str, str]:
     return {"message": "Furniture AI PRO backend is running"}

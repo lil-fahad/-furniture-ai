@@ -50,9 +50,11 @@ class YOLOService:
 
     def render_preview_from_path(self, source: Path) -> str:
         with Image.open(source) as img:
-            img = img.convert("RGB")
+            if img.mode not in ("RGB", "RGBA"):
+                has_alpha = "A" in img.mode or (img.mode == "P" and "transparency" in img.info)
+                img = img.convert("RGBA" if has_alpha else "RGB")
             img.thumbnail((512, 512))
-            preview_path = source.with_suffix(".preview.png")
+            preview_path = source.parent / f"{source.stem}.preview.png"
             img.save(preview_path)
         encoded = base64.b64encode(preview_path.read_bytes()).decode("utf-8")
         logger.info("preview generated", extra={"path": str(preview_path)})
