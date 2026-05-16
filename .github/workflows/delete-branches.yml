@@ -1,0 +1,77 @@
+name: Delete Branches After Merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "yes" to delete all non-main branches'
+        required: true
+        default: 'no'
+
+permissions:
+  contents: write
+
+jobs:
+  # Auto-delete branch when a PR is merged into main
+  delete-merged-branch:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete merged branch
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            if (branch === 'main') {
+              console.log('Skipping deletion of main branch.');
+              return;
+            }
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `heads/${branch}`,
+              });
+              console.log(`Deleted branch: ${branch}`);
+            } catch (err) {
+              console.error(`Failed to delete branch ${branch}: ${err.message}`);
+            }
+
+  # Manually delete ALL non-main branches via workflow_dispatch
+  delete-all-branches:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'yes'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all non-main branches
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: branches } = await github.rest.repos.listBranches({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            const protected_branches = ['main'];
+            const to_delete = branches.filter(b => !protected_branches.includes(b.name));
+
+            for (const branch of to_delete) {
+              try {
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `heads/${branch.name}`,
+                });
+                console.log(`Deleted: ${branch.name}`);
+              } catch (err) {
+                console.error(`Failed to delete ${branch.name}: ${err.message}`);
+              }
+            }
+
+            console.log(`Done. Deleted ${to_delete.length} branches.`);
