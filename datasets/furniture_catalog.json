@@ -1,0 +1,22 @@
+[
+  {
+    "item_id": "chair-1",
+    "name": "Modern Chair",
+    "category": "chair"
+  },
+  {
+    "item_id": "table-1",
+    "name": "Dining Table",
+    "category": "table"
+  },
+  {
+    "item_id": "sofa-1",
+    "name": "Cozy Sofa",
+    "category": "sofa"
+  },
+  {
+    "item_id": "lamp-1",
+    "name": "Floor Lamp",
+    "category": "lighting"
+  }
+]
