@@ -1,0 +1,19 @@
+name: Export repository snapshot
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          lfs: true
+      - run: tar --exclude='.git' --exclude='repository-snapshot.tar.gz' -czf repository-snapshot.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repository-snapshot
+          path: repository-snapshot.tar.gz
+          retention-days: 1
