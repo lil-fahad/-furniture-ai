@@ -6,6 +6,10 @@ learning, and a durable PostgreSQL job queue. Supplier integration is deferred.
 Furniture dimensions are editable concept specifications; there are no fabricated
 SKUs, prices, stock levels, or purchase links.
 
+**Windows GPU training with the uploaded COCO archive:**
+[Arabic setup and one-file launcher](README-WINDOWS-AR.md).
+[Measured data preparation and research training results](docs/DATA-EXECUTION-20260907.md).
+
 ## Delivery status
 
 This directory contains executable application, inference, training, evaluation,

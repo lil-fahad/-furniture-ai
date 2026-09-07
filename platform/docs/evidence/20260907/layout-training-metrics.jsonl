@@ -1,0 +1,5 @@
+{"epoch": 1, "train_loss": 0.1744132412727489, "validation_mean_batch_loss": 0.17571882593135038}
+{"epoch": 2, "train_loss": 0.1698157359347787, "validation_mean_batch_loss": 0.17076660506427288}
+{"epoch": 3, "train_loss": 0.16664497034494266, "validation_mean_batch_loss": 0.16725500610967478}
+{"epoch": 4, "train_loss": 0.1653378112025039, "validation_mean_batch_loss": 0.16695568213860193}
+{"epoch": 5, "train_loss": 0.16446401715971704, "validation_mean_batch_loss": 0.1668559598426024}

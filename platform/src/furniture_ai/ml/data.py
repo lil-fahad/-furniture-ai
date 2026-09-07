@@ -12,7 +12,7 @@ from PIL import Image
 
 
 def read_jsonl(path):
-    with Path(path).open() as f:
+    with Path(path).open(encoding="utf-8") as f:
         for number, line in enumerate(f, 1):
             if line.strip():
                 try:

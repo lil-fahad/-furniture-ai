@@ -19,13 +19,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--lock", type=Path, default=Path("models.lock.json"))
     parser.add_argument("--output", type=Path, default=Path("data/models"))
-    parser.add_argument("--group", choices=[*GROUPS, "all"], default="all")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--group", choices=[*GROUPS, "all"], default="all")
+    selection.add_argument(
+        "--model", action="append", choices=sorted({a for group in GROUPS.values() for a in group})
+    )
     parser.add_argument(
         "--verify", action="store_true", help="Verify local SHA-256 inventory without downloading"
     )
     args = parser.parse_args()
     lock = json.loads(args.lock.read_text())
-    aliases = list(lock["models"]) if args.group == "all" else GROUPS[args.group]
+    aliases = args.model or (list(lock["models"]) if args.group == "all" else GROUPS[args.group])
     for alias in aliases:
         record = lock["models"][alias]
         if record.get("source") != "local" and len(record["revision"]) != 40:

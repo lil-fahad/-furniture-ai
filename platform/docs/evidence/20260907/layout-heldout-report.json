@@ -1,0 +1,62 @@
+{
+  "task": "FurnitureLayoutTransformer",
+  "device": "cpu",
+  "torch": "2.8.0+cpu",
+  "selected_epoch": 5,
+  "selection": "Lowest validation mean batch loss; test not used for selection",
+  "baseline": "Same architecture and original seed before any optimizer updates",
+  "training_config": {
+    "epochs": 5,
+    "batch_size": 16,
+    "gradient_accumulation": 1,
+    "learning_rate": 0.0001,
+    "mixed_precision": "no",
+    "seed": 42,
+    "world_size": 1
+  },
+  "train_rooms": 1375,
+  "validation_rooms": 371,
+  "test_manifest_sha256": "3a22183b7f5c052f98ac02a85ace00eb9aa210bd06b2f9c447c915f6e4762ebe",
+  "dataset_sha256": "74743e1c0031cbfa56a94dbc7a5fb824218793680b6cee6860eb6b8c45d3ad58",
+  "weights_sha256": "35077c865254023c7ac2f4221a240dbbcde4c8a8e1e8cb1e79914a3fb59b5391",
+  "commercial_use": false,
+  "initial": {
+    "rooms": 314,
+    "pieces": 418,
+    "mean_room_loss": 0.18420230903348345,
+    "center_distance_mean_m": 1.606642208929486,
+    "center_distance_median_m": 1.205209473616577,
+    "center_normalized_axis_mae": 0.21574796834274343,
+    "rotation_accuracy": 0.5789473684210527,
+    "footprint_iou": 0.1695616218480069,
+    "raw_layout_pass_rate": 0.2611464968152867,
+    "raw_layout_failure_counts": {
+      "BLOCKED_ZONE": 118,
+      "OUTSIDE_ROOM": 72,
+      "COLLISION": 42
+    }
+  },
+  "trained": {
+    "rooms": 314,
+    "pieces": 418,
+    "mean_room_loss": 0.15942373871803284,
+    "center_distance_mean_m": 1.520186516477993,
+    "center_distance_median_m": 1.0905290639241905,
+    "center_normalized_axis_mae": 0.20340121116792187,
+    "rotation_accuracy": 0.5933014354066986,
+    "footprint_iou": 0.1631429097748349,
+    "raw_layout_pass_rate": 0.26433121019108285,
+    "raw_layout_failure_counts": {
+      "BLOCKED_ZONE": 117,
+      "OUTSIDE_ROOM": 59,
+      "COLLISION": 55
+    }
+  },
+  "solver_applied": false,
+  "production_approved": false,
+  "limits": [
+    "Reference-placement fidelity does not measure design preference",
+    "Conservative SpatialLM subset; source licence remains CC BY-NC 4.0",
+    "Geometric pass rate is measured on raw neural predictions before the application solver"
+  ]
+}

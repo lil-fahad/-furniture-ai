@@ -1,0 +1,102 @@
+{
+  "dataset": "SpatialLM floor-layout research subset",
+  "license": "CC-BY-NC-4.0",
+  "archive_sha256": "f65f4a1bbab62eac966b8a149d0a69fe048c60bf7b0685c22296cdda8d125cf5",
+  "source_layout_records": 216536,
+  "source_unique_rooms": 54775,
+  "accepted_rooms": 2247,
+  "rejected_rooms": 52528,
+  "rejection_reasons": {
+    "unsupported_piece_count": 18813,
+    "unsupported_object_yaw": 5639,
+    "COLLISION": 4032,
+    "heterogeneous_sizes_in_one_requirement": 4099,
+    "invalid_symbol": 3216,
+    "OUTSIDE_ROOM": 9298,
+    "BLOCKED_ZONE": 4583,
+    "schema_rejected": 2212,
+    "nonunique_closed_room": 633,
+    "room_outside_application_bounds": 3
+  },
+  "rejection_examples": {
+    "unsupported_piece_count": [
+      "scene_000000_00_0",
+      "scene_000000_01_0",
+      "scene_000000_02_0",
+      "scene_000000_04_0",
+      "scene_000001_01_0"
+    ],
+    "unsupported_object_yaw": [
+      "scene_000000_03_0",
+      "scene_000001_00_0",
+      "scene_000002_01_0",
+      "scene_000008_00_0",
+      "scene_000015_01_0"
+    ],
+    "COLLISION": [
+      "scene_000004_00_0",
+      "scene_000038_01_0",
+      "scene_000046_00_0",
+      "scene_000063_01_0",
+      "scene_000063_03_0"
+    ],
+    "heterogeneous_sizes_in_one_requirement": [
+      "scene_000005_00_0",
+      "scene_000006_00_0",
+      "scene_000009_00_0",
+      "scene_000028_03_0",
+      "scene_000030_01_0"
+    ],
+    "invalid_symbol": [
+      "scene_000007_00_0",
+      "scene_000010_00_0",
+      "scene_000011_00_0",
+      "scene_000012_00_0",
+      "scene_000029_00_0"
+    ],
+    "OUTSIDE_ROOM": [
+      "scene_000016_00_0",
+      "scene_000020_01_0",
+      "scene_000039_02_0",
+      "scene_000044_00_0",
+      "scene_000052_01_0"
+    ],
+    "BLOCKED_ZONE": [
+      "scene_000021_00_0",
+      "scene_000067_03_0",
+      "scene_000071_03_0",
+      "scene_000073_01_0",
+      "scene_000074_02_0"
+    ],
+    "schema_rejected": [
+      "scene_000027_00_0",
+      "scene_000034_00_0",
+      "scene_000040_00_0",
+      "scene_000066_01_0",
+      "scene_000066_02_0"
+    ],
+    "nonunique_closed_room": [
+      "scene_000050_00_0",
+      "scene_000060_03_0",
+      "scene_000067_00_0",
+      "scene_000069_01_0",
+      "scene_000090_04_0"
+    ],
+    "room_outside_application_bounds": [
+      "scene_005645_01_0",
+      "scene_009915_02_0",
+      "scene_010542_01_0"
+    ]
+  },
+  "splits": {
+    "train": 1375,
+    "validation": 371,
+    "test": 314,
+    "reserved": 187
+  },
+  "split_policy": "Only publisher-train scenes are split 70/15/15 by scene identity; original val/test/reserved rooms remain quarantined",
+  "geometry_policy": "Closed source wall polygon; floor objects only; unsupported objects retained as fixed obstacles; dimensions are not resized to pass validation",
+  "source_pointclouds_included": false,
+  "commercial_use": false,
+  "ready_for_training": true
+}

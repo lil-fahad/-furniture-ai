@@ -4,6 +4,7 @@
 node_modules/
 test-results/
 .venv/
+.venv-win/
 __pycache__/
 *.pyc
 *.db*

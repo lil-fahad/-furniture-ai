@@ -1,0 +1,21 @@
+{
+  "input": "User COCO annotation polygons and actually downloaded JPEGs",
+  "pretrained_weights": false,
+  "purpose": "Forward/backward integration check, not model quality or full training",
+  "models": [
+    {
+      "task": "dino",
+      "image_path": "images/train2017/000000010444.jpg",
+      "record_id": "coco-10444",
+      "loss": 343.15216064453125,
+      "finite_gradients": true
+    },
+    {
+      "task": "sam2",
+      "image_path": "images/train2017/000000019074.jpg",
+      "record_id": "coco-mask-100896",
+      "loss": 1.6140108108520508,
+      "finite_gradients": true
+    }
+  ]
+}

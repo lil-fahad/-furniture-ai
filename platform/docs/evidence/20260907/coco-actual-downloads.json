@@ -1,0 +1,30 @@
+{
+  "exported_records": {
+    "dino": {
+      "train": 116,
+      "validation": 16,
+      "test": 0,
+      "reserved": 0
+    },
+    "sam2": {
+      "train": 309,
+      "validation": 39,
+      "test": 0,
+      "reserved": 0
+    }
+  },
+  "excluded": {
+    "crowd_annotation": 4
+  },
+  "dataset": "COCO furniture local downloaded subset",
+  "annotation_archive_sha256": "113a836d90195ee1f884e704da6304dfaaecff1f023f49b6ca93c4aaae470268",
+  "verified_images": 132,
+  "verified_image_bytes": 22018677,
+  "selected_images_in_full_annotations": 4149,
+  "ready_for_training": false,
+  "full_acquisition_complete": false,
+  "download_state": "Remote execution network policy blocked further S3 access",
+  "image_license": "CC-BY-2.0",
+  "annotation_license": "CC-BY-4.0",
+  "note": "Only the bytes received and verified are included. Complete the normal source import before a full training run; official val2017 test images are missing."
+}
