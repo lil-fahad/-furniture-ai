@@ -18,4 +18,4 @@ The chosen Google SigLIP 2 fixed-resolution checkpoint uses the `SiglipModel` ar
 
 Native Windows checks install platform-specific hashed dependency locks, launch the `.cmd` entry point and exercise CPU model contracts. The CUDA doctor and preflight must pass on the actual NVIDIA device before a GPU job starts. Model revisions are immutable, partial datasets fail readiness checks, failed metrics prevent promotion, and the runtime returns explicit dependency errors when required models are absent.
 
-Recorded local verification: **49 tests passed; two PostgreSQL tests require CI**. The separate CI workflow also runs PostgreSQL, browser and container gates. This document does not label a model as production-approved merely because its code executed.
+Recorded local verification: **50 tests passed; two PostgreSQL tests require CI**. The separate CI workflow also runs PostgreSQL, browser and container gates. This document does not label a model as production-approved merely because its code executed.

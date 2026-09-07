@@ -17,7 +17,8 @@ def digest(path):
 def safe_member(info, maximum=600_000_000):
     path = PurePosixPath(info.filename)
     if (
-        path.is_absolute()
+        info.orig_filename != info.filename
+        or path.is_absolute()
         or ".." in path.parts
         or "\\" in info.filename
         or ":" in info.filename

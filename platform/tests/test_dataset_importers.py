@@ -7,7 +7,7 @@ import pytest
 from PIL import Image
 
 from furniture_ai.ml.data import read_jsonl
-from furniture_ai.ml.dataset_io import grouped_splits, open_zip
+from furniture_ai.ml.dataset_io import grouped_splits, open_zip, safe_member
 from furniture_ai.ml.import_coco import export_records, inspect_annotations
 from furniture_ai.ml.import_spatiallm import RejectedLayout, convert_layout, parse_layout
 
@@ -16,10 +16,21 @@ from furniture_ai.ml.import_spatiallm import RejectedLayout, convert_layout, par
 def test_archive_paths_cannot_escape_dataset(name):
     memory = io.BytesIO()
     with zipfile.ZipFile(memory, "w") as archive:
-        archive.writestr(name, b"untrusted")
+        entry = zipfile.ZipInfo("placeholder")
+        # Preserve the deliberately malformed name; Windows ZipInfo(name)
+        # normalizes backslashes before writestr otherwise sees the fixture.
+        entry.filename = entry.orig_filename = name
+        archive.writestr(entry, b"untrusted")
     memory.seek(0)
     with pytest.raises(ValueError):
         open_zip(memory)
+
+
+def test_archive_checks_original_name_before_platform_normalization():
+    entry = zipfile.ZipInfo("images/escape.jpg")
+    entry.orig_filename = "images\\escape.jpg"
+    with pytest.raises(ValueError):
+        safe_member(entry)
 
 
 def test_product_views_and_cross_product_exact_copies_do_not_leak():
