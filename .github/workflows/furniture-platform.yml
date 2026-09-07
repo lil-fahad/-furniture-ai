@@ -78,8 +78,17 @@ jobs:
       - run: python -m pip install --no-deps -e .
       - run: python scripts/windows_train.py --help
       - run: cmd /c "START-WINDOWS.cmd --help <NUL"
+      - run: pytest -q tests/test_windows_launcher.py tests/test_windows_support.py tests/test_desktop.py tests/test_vlm_protocol.py
       - run: pytest -q -m ml
       - run: pytest -q tests/test_dataset_importers.py
+      - run: python scripts/build_windows_package.py --output dist/FurnitureAI-Windows-v2.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: furniture-ai-windows-v2
+          path: |
+            platform/dist/FurnitureAI-Windows-v2.zip
+            platform/dist/INSTALL-FURNITURE.cmd
+          retention-days: 30
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 15

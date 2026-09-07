@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class ModelSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_prefix="FURNITURE_ML_", extra="ignore")
-    role: Literal["perception", "generation", "scoring"] = "perception"
+    role: Literal["perception", "generation", "scoring", "evaluator", "all"] = "perception"
     device: str = "cuda"
     api_key: SecretStr = SecretStr("")
     models_dir: Path = Path("data/models")

@@ -146,3 +146,12 @@ TEST_POSTGRES_URL='postgresql+psycopg://USER:PASSWORD@localhost:5432/TEST_DB' py
 
 The repository's `furniture-platform.yml` workflow runs API tests, PostgreSQL
 concurrency, migrations, a CPU ML test job, and the application container build.
+# Windows desktop distribution (1.1)
+
+Open `START-WINDOWS.cmd` to use the native control panel. It manages environment
+setup, pinned model downloads, a local design studio, and real dataset training.
+See [the Arabic Windows guide](README-WINDOWS-AR.md) or open `START-HERE.html`.
+The local studio uses SQLite, one worker, and one serialized model service, including
+Qwen through Transformers; Docker and vLLM are not required for this local path.
+It binds only to loopback. Production deployment still uses the PostgreSQL and
+HTTPS configuration below. Model weights and large datasets download separately.

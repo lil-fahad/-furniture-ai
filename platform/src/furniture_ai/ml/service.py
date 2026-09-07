@@ -14,6 +14,7 @@ from furniture_ai.ml.config import ModelSettings
 from furniture_ai.ml.install import GROUPS
 from furniture_ai.ml.networks import RANK_FEATURES
 from furniture_ai.ml.runtime import ModelRuntime
+from furniture_ai.ml.vlm_protocol import ChatRequest
 from furniture_ai.schemas import Category, Geometry, Schema
 
 
@@ -84,7 +85,7 @@ def create_model_app(settings=None, runtime=None):
             raise HTTPException(401, "Unauthorized")
 
     def invoke(role, function, payload):
-        if settings.role != role:
+        if settings.role not in {role, "all"}:
             return JSONResponse({"error": "WRONG_SERVICE"}, status_code=404)
         if not gate.acquire(blocking=False):
             return JSONResponse({"error": "BUSY"}, status_code=429, headers={"Retry-After": "5"})
@@ -114,7 +115,12 @@ def create_model_app(settings=None, runtime=None):
     @app.get("/health/ready")
     def ready():
         try:
-            for alias in GROUPS[settings.role]:
+            aliases = (
+                [alias for group in GROUPS.values() for alias in group]
+                if settings.role == "all"
+                else GROUPS[settings.role]
+            )
+            for alias in aliases:
                 settings.model_path(alias)
             return {"status": "ready", "role": settings.role}
         except (OSError, KeyError, ValueError):
@@ -139,5 +145,9 @@ def create_model_app(settings=None, runtime=None):
     @app.post("/v1/rank", dependencies=[Depends(auth)])
     def rank(body: RankingRequest):
         return invoke("scoring", runtime.rank, body)
+
+    @app.post("/v1/chat/completions", dependencies=[Depends(auth)])
+    def chat(body: ChatRequest):
+        return invoke("evaluator", runtime.chat, body)
 
     return app

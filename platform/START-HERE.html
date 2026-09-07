@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تشغيل Furniture AI على ويندوز</title>
+<style>body{font:18px/1.9 'Segoe UI',Tahoma,sans-serif;max-width:850px;margin:50px auto;padding:24px;color:#193a32;background:#f5f5f0}h1{font-size:38px}article{background:white;padding:30px;border-radius:16px}code{direction:ltr;unicode-bidi:embed;background:#eef3ef;padding:3px 6px;border-radius:4px}li{margin:14px 0}.note{border-right:4px solid #568272;padding:12px 20px;background:#eef3ef}</style>
+<article><h1>Furniture AI</h1><p>المشروع والتدريب على جهاز ويندوز، من نافذة تحكم واحدة.</p>
+<ol><li>فك ضغط الحزمة بالكامل. افتح <code>START-WINDOWS.cmd</code> من المجلد الناتج، وليس من داخل ZIP.</li>
+<li>إذا لم يجد البرنامج Python، افتح <code>INSTALL-PYTHON.cmd</code> الموجود في المجلد نفسه. بعد التثبيت افتح ملف التشغيل مرة أخرى.</li>
+<li>اضغط <b>Check GPU — فحص الجهاز</b> ثم <b>Setup — تجهيز البيئة</b>. التجهيز ينزّل حزم المشروع وقد يستغرق وقتًا حسب الإنترنت.</li></ol>
+<h2>فتح واجهة التصميم</h2><p>من تبويب المشروع اضغط <b>Download models</b> لتنزيل الأوزان الرسمية. تحتاج مساحة كبيرة واتصال إنترنت. اكتب اسم المستخدم وكلمة مرور لا تقل عن 12 حرفًا، ثم اضغط <b>Open studio</b>. في المرات التالية استخدم بيانات الدخول نفسها.</p>
+<p>تفتح الواجهة على <code>http://localhost:8765</code>. ارفع صورة غرفة أو مخططًا، وحدد طلبك وأكّد قياسات الغرفة. تبقى نافذة التحكم مفتوحة أثناء العمل.</p>
+<h2>تدريب النماذج</h2><p>من تبويب التدريب اختر النموذج. اضغط <b>Browse</b> واختر <code>annotations_trainval2017.zip</code> لتدريب DINO أو SAM 2. اضغط <b>Check data</b> ثم <b>Train</b>. يحتوي ZIP على التعليقات التوضيحية؛ الصور تُنزّل عند تجهيز البيانات.</p>
+<p>SigLIP يحتاج أرشيف صور ABO الكامل، وLayout يحتاج أرشيف SpatialLM وتفعيل خيار البيانات البحثية. ملف قوائم الصور وحده لا يغني عن الصور الأصلية.</p>
+<div class="note">فحص الملفات أو نجاح تثبيت الحزم لا يثبت جودة النماذج. الأوزان الكبيرة تحتاج بطاقة NVIDIA وذاكرة مناسبة؛ يختبر البرنامج CUDA فعليًا. بيانات SpatialLM وأوزانها بحثية غير تجارية. الموردون مؤجلون.</div>
+<h2>عند وجود مشكلة</h2><p>اضغط <b>Logs</b> وأرسل أحدث ملف سجل. تقرير الجهاز في <code>data/gpu-report.json</code>. زر الإيقاف يوقف العملية الحالية؛ يمكن استئناف التدريب من آخر دورة مكتملة. لا يلزم تغيير سياسة PowerShell أو تعطيل حماية ويندوز.</p>
+<p>تفاصيل المعمارية والتدريب والنشر موجودة في مجلد <code>docs</code>، ودليل ويندوز في <code>README-WINDOWS-AR.md</code>.</p></article></html>

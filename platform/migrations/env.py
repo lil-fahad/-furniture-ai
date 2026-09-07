@@ -4,7 +4,7 @@ from furniture_ai import models  # noqa: F401
 from furniture_ai.config import get_settings
 from furniture_ai.db import Base, make_engine
 
-settings = get_settings()
+settings = context.config.attributes.get("settings") or get_settings()
 
 if context.is_offline_mode():
     context.configure(

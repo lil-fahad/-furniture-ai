@@ -22,6 +22,7 @@ class ModelRuntime:
 
     def load(self, name, build):
         if self.loaded_name != name:
+            self.loaded_name = None
             self.loaded = None
             gc.collect()
             if torch.cuda.is_available():
@@ -30,17 +31,59 @@ class ModelRuntime:
             self.loaded_name = name
         return self.loaded
 
-    def pretrained(self, alias, model_class, processor_class):
+    def pretrained(self, alias, model_class, processor_class, *, dtype=None, **processor_options):
         path, revision = self.settings.model_path(alias)
-        processor = processor_class.from_pretrained(path, local_files_only=True, trust_remote_code=False)
+        processor = processor_class.from_pretrained(
+            path, local_files_only=True, trust_remote_code=False, **processor_options
+        )
         model = (
             model_class.from_pretrained(
-                path, local_files_only=True, use_safetensors=True, trust_remote_code=False
+                path,
+                local_files_only=True,
+                use_safetensors=True,
+                trust_remote_code=False,
+                **({"torch_dtype": dtype} if dtype is not None else {}),
             )
             .eval()
             .to(self.device)
         )
         return model, processor, revision
+
+    @torch.inference_mode()
+    def chat(self, request):
+        from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
+
+        from furniture_ai.ml.vlm_protocol import message_parts, structured_response
+
+        messages, encoded_images = message_parts(request)
+        images = [image_from_base64(value) for value in encoded_images]
+        dtype = torch.float32
+        if self.device.type == "cuda":
+            dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+        model, processor, _ = self.load(
+            "evaluator",
+            lambda: self.pretrained(
+                "evaluator",
+                Qwen2_5_VLForConditionalGeneration,
+                AutoProcessor,
+                dtype=dtype,
+                max_pixels=768 * 28 * 28,
+            ),
+        )
+        prompt = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        inputs = processor(text=[prompt], images=images, return_tensors="pt").to(self.device)
+        length = inputs.input_ids.shape[1]
+        if length > 8192:
+            raise ValueError("Vision prompt exceeds the local context limit")
+        # Greedy output is reproducible and does not need platform-specific sampling kernels.
+        output = model.generate(**inputs, max_new_tokens=request.max_tokens, do_sample=False)
+        generated = output[0, length:]
+        eos = model.generation_config.eos_token_id
+        eos = eos if isinstance(eos, list) else [eos]
+        if len(generated) >= request.max_tokens and int(generated[-1]) not in eos:
+            raise ValueError("Vision output reached the token limit; no partial analysis is accepted")
+        text = processor.batch_decode([generated], skip_special_tokens=True)[0]
+        return structured_response(text, request.structured_outputs.json_schema)
 
     @torch.inference_mode()
     def perceive(self, request):
