@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "furniture-ai"
+version = "1.1.0"
+description = "Private room analysis, constrained furnishing proposals, and trainable interior models"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi==0.141.1", "uvicorn==0.52.4", "sqlalchemy==2.0.52",
+  "psycopg[binary]==3.3.5", "httpx==0.28.1", "pydantic-settings==2.15.0",
+  "python-multipart==0.0.32", "pillow==12.3.0", "argon2-cffi==25.1.0",
+  "boto3==1.43.89", "alembic==1.19.2", "numpy==2.5.3",
+  "prometheus-client==0.26.0", "shapely==2.1.2",
+  "pypdfium2==5.13.0"
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1", "pytest-cov==7.1.0", "ruff==0.16.6"]
+
+[project.scripts]
+furniture = "furniture_ai.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/furniture_ai"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["postgres: requires TEST_POSTGRES_URL", "ml: requires ML dependencies"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["third_party"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B", "UP"]

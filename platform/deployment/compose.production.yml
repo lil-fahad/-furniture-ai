@@ -1,0 +1,44 @@
+name: furniture-production
+x-app: &app
+  image: ${FURNITURE_IMAGE:?Set an immutable image digest}
+  env_file: ../.env.production
+  secrets: [db_ca]
+  init: true
+  read_only: true
+  tmpfs: ["/tmp:size=128m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+services:
+  migrate:
+    <<: *app
+    command: [alembic, upgrade, head]
+    restart: "no"
+  api:
+    <<: *app
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request,os; r=urllib.request.Request('http://127.0.0.1:8000/health/ready',headers={'Host':__import__('urllib.parse',fromlist=['urlsplit']).urlsplit(os.environ['FURNITURE_PUBLIC_ORIGIN']).hostname}); urllib.request.urlopen(r)"]
+      interval: 15s
+      retries: 3
+  worker:
+    <<: *app
+    command: [furniture, worker]
+    stop_grace_period: 10m
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+  gateway:
+    image: caddy:2
+    environment:
+      DOMAIN: ${DOMAIN:?Set the public domain}
+    ports: ["80:80", "443:443"]
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy-data:/data", "caddy-config:/config"]
+    depends_on: [api]
+    restart: unless-stopped
+volumes:
+  caddy-data:
+  caddy-config:
+secrets:
+  db_ca:
+    file: ${DB_CA_FILE:?Set the absolute PostgreSQL CA certificate path}

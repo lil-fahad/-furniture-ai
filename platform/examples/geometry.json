@@ -1,0 +1,6 @@
+{
+  "boundary": [{"x":0,"y":0},{"x":5,"y":0},{"x":5,"y":4},{"x":0,"y":4}],
+  "keepouts": [{"label":"Door swing","kind":"door","polygon":[{"x":0,"y":0},{"x":1,"y":0},{"x":1,"y":1},{"x":0,"y":1}]}],
+  "access_points": [{"x":0.6,"y":0.6},{"x":4.4,"y":3.4}],
+  "confirmed": true
+}

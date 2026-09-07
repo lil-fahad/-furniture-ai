@@ -1,0 +1,56 @@
+{
+  "annotation_archive_sha256": "113a836d90195ee1f884e704da6304dfaaecff1f023f49b6ca93c4aaae470268",
+  "splits": {
+    "train2017": {
+      "all_images": 118287,
+      "all_instances": 860001,
+      "furniture_images_all_licenses": 24234,
+      "furniture_instances": {
+        "sofa": 5779,
+        "chair": 38491,
+        "dining_table": 15714,
+        "bed": 4192
+      },
+      "selected_images": 3949,
+      "selected_instances": 11170,
+      "furniture_images_by_license": {
+        "6": 1150,
+        "1": 7175,
+        "3": 6258,
+        "2": 3394,
+        "4": 3949,
+        "5": 2251,
+        "7": 57
+      }
+    },
+    "val2017": {
+      "all_images": 5000,
+      "all_instances": 36781,
+      "furniture_images_all_licenses": 1048,
+      "furniture_instances": {
+        "sofa": 261,
+        "chair": 1791,
+        "dining_table": 697,
+        "bed": 163
+      },
+      "selected_images": 200,
+      "selected_instances": 555,
+      "furniture_images_by_license": {
+        "3": 304,
+        "1": 293,
+        "2": 115,
+        "5": 89,
+        "4": 200,
+        "6": 47
+      }
+    }
+  },
+  "selected_license_ids": [
+    4
+  ],
+  "annotation_license": "CC-BY-4.0",
+  "source": "https://cocodataset.org/#download",
+  "selection": "Four project furniture classes; default image license CC BY 2.0 only",
+  "image_bytes_in_attachment": false,
+  "selected_after_limit": 4149
+}

@@ -1,5 +1,19 @@
 # Furniture AI System
 
+The new implementation is in **[platform/](platform/README.md)**. It includes the
+authenticated design studio, PostgreSQL workers, pinned Grounding DINO / SAM 2.1 /
+Depth Anything V2 / SDXL / SigLIP 2 / Qwen adapters, custom layout/floorplan/ranking
+training, evaluation gates, tests and deployment instructions. **Suppliers are
+deferred**. See its delivery status before assuming weights were trained or a
+production cloud deployment was validated.
+
+Start with `cd platform` and follow [the exact run commands](platform/README.md).
+
+## Earlier implementation
+
+The directories below are retained for compatibility and history. The previous
+automation includes sample/stub behavior; it is not the new platform's execution path.
+
 End-to-end automation for blueprint analysis, furniture recommendation, and 3D layout synthesis. The stack includes FastAPI services, automation scripts for datasets and training, and a Vite React frontend.
 
 ## Structure

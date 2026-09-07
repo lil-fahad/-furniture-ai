@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "models": {
+    "grounding_dino": {
+      "repo_id": "IDEA-Research/grounding-dino-base",
+      "revision": "12bdfa3120f3e7ec7b434d90674b3396eccf88eb",
+      "license": "apache-2.0",
+      "source": "https://huggingface.co/IDEA-Research/grounding-dino-base"
+    },
+    "sam2": {
+      "repo_id": "facebook/sam2.1-hiera-small",
+      "revision": "ee5bba1d82bb8749febdf90f45e84b687142ba03",
+      "license": "apache-2.0",
+      "source": "https://huggingface.co/facebook/sam2.1-hiera-small"
+    },
+    "depth_anything": {
+      "repo_id": "depth-anything/Depth-Anything-V2-Small-hf",
+      "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+      "license": "apache-2.0",
+      "source": "https://huggingface.co/depth-anything/Depth-Anything-V2-Small-hf"
+    },
+    "siglip": {
+      "repo_id": "google/siglip2-base-patch16-224",
+      "revision": "75de2d55ec2d0b4efc50b3e9ad70dba96a7b2fa2",
+      "license": "apache-2.0",
+      "source": "https://huggingface.co/google/siglip2-base-patch16-224"
+    },
+    "sdxl": {
+      "repo_id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+      "license": "openrail++",
+      "source": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+    },
+    "controlnet_canny": {
+      "repo_id": "diffusers/controlnet-canny-sdxl-1.0",
+      "revision": "eb115a19a10d14909256db740ed109532ab1483c",
+      "license": "openrail++",
+      "source": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0"
+    },
+    "controlnet_depth": {
+      "repo_id": "diffusers/controlnet-depth-sdxl-1.0",
+      "revision": "17bb97973f29801224cd66f192c5ffacf82648b4",
+      "license": "openrail++",
+      "source": "https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0"
+    },
+    "vae": {
+      "repo_id": "madebyollin/sdxl-vae-fp16-fix",
+      "revision": "207b116dae70ace3637169f1ddd2434b91b3a8cd",
+      "license": "mit",
+      "source": "https://huggingface.co/madebyollin/sdxl-vae-fp16-fix"
+    },
+    "evaluator": {
+      "repo_id": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "revision": "cc594898137f460bfe9f0759e9844b3ce807cfb5",
+      "license": "apache-2.0",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct"
+    }
+  }
+}

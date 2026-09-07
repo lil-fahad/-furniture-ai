@@ -1,0 +1,43 @@
+{
+  "dataset": "ABO furniture SigLIP",
+  "archive_sha256": "99ea65a60969790ee5111c15f778b79a1b0d383c022e843fe77ad7dd2da16287",
+  "license": "CC-BY-4.0",
+  "images_verified": 56751,
+  "products": 12022,
+  "caption_pairs": 158050,
+  "language_records": {
+    "en_US": 42196,
+    "zh_CN": 32827,
+    "es_ES": 3282,
+    "es_MX": 1735,
+    "fr_FR": 2317,
+    "en_CA": 1819,
+    "en_GB": 7614,
+    "it_IT": 2574,
+    "nl_NL": 1080,
+    "en_AU": 281,
+    "sv_SE": 949,
+    "de_DE": 1275,
+    "en_IN": 5358,
+    "ar_AE": 21853,
+    "ko_KR": 31670,
+    "tr_TR": 55,
+    "en_SG": 254,
+    "en_AE": 430,
+    "zh_TW": 289,
+    "fr_CA": 13,
+    "ja_JP": 171,
+    "cs_CZ": 8
+  },
+  "splits": {
+    "train": 41816,
+    "validation": 19181,
+    "test": 97053,
+    "reserved": 0
+  },
+  "split_policy": "All views/languages of a product and exact shared image bytes remain in one group",
+  "image_maximum_side": 256,
+  "image_bytes_changed": false,
+  "near_duplicate_limit": "Identity and exact-byte duplicates are grouped; cross-product near-duplicate visual review remains separate",
+  "ready_for_training": true
+}

@@ -1,0 +1,24 @@
+@echo off
+setlocal EnableExtensions DisableDelayedExpansion
+set "FURNITURE_ARCHIVE=%~dp0@ARCHIVE_NAME@"
+set "FURNITURE_PACKAGE_SHA=@ARCHIVE_SHA@"
+if not defined LOCALAPPDATA goto no_profile
+set "FURNITURE_DEST=%LOCALAPPDATA%\FurnitureAI\Windows-v2-@SHORT_SHA@"
+if exist "%FURNITURE_DEST%\START-WINDOWS.cmd" goto launch
+if not exist "%FURNITURE_ARCHIVE%" goto no_archive
+echo Checking and extracting Furniture AI. This may take a moment.
+powershell.exe -NoLogo -NoProfile -Command "$ErrorActionPreference='Stop'; $actual=(Get-FileHash -LiteralPath $env:FURNITURE_ARCHIVE -Algorithm SHA256).Hash; if($actual -ne $env:FURNITURE_PACKAGE_SHA){throw 'ZIP verification failed. Download the matching ZIP and installer again.'}; if(Test-Path -LiteralPath $env:FURNITURE_DEST){throw 'An incomplete extraction exists. Use Extract All to a new folder and open START-WINDOWS.cmd.'}; Expand-Archive -LiteralPath $env:FURNITURE_ARCHIVE -DestinationPath $env:FURNITURE_DEST"
+if errorlevel 1 goto failed
+echo Extracted successfully.
+:launch
+call "%FURNITURE_DEST%\START-WINDOWS.cmd"
+exit /b %ERRORLEVEL%
+:no_archive
+echo Put @ARCHIVE_NAME@ and INSTALL-FURNITURE.cmd in the SAME folder.
+echo Keep the ZIP filename unchanged. Then open INSTALL-FURNITURE.cmd again.
+goto failed
+:no_profile
+echo Windows did not provide a local user profile path.
+:failed
+pause
+exit /b 1
