@@ -1,0 +1,8 @@
+{
+  "hard_layout_pass_rate": {"min": 1.0, "min_samples": 200},
+  "vlm_schema_valid_rate": {"min": 0.99, "min_samples": 200},
+  "unsupported_dimension_rate": {"max": 0.01, "min_samples": 100},
+  "evaluator_mae": {"max": 0.15, "min_samples": 200},
+  "unedited_pixel_mae": {"max": 0.0, "min_samples": 200},
+  "human_preference_win_rate": {"min": 0.55, "min_samples": 200}
+}

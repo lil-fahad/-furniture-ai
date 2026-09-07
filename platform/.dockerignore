@@ -1,0 +1,14 @@
+.env*
+.venv
+.git
+data
+checkpoints
+tests
+docs
+third_party
+**/__pycache__
+**/*.pyc
+**/*.db
+.pytest_cache
+.ruff_cache
+dist

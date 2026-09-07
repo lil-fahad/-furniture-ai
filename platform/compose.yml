@@ -1,0 +1,114 @@
+name: furniture-ai
+x-app: &app
+  build: .
+  image: furniture-ai:local
+  env_file: .env
+  volumes: ["objects:/data"]
+  init: true
+  read_only: true
+  tmpfs: ["/tmp:size=128m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+x-model: &model
+  build:
+    context: .
+    dockerfile: Dockerfile.model
+  image: furniture-ai-model:local
+  env_file: .env
+  volumes: ["./data/models:/models:ro", "./models.lock.json:/app/models.lock.json:ro"]
+  init: true
+  read_only: true
+  tmpfs: ["/tmp:size=512m,mode=1777"]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  restart: unless-stopped
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: furniture
+      POSTGRES_USER: furniture
+      POSTGRES_PASSWORD: ${FURNITURE_DB_PASSWORD:?Run scripts/configure.py}
+    volumes: ["postgres:/var/lib/postgresql/data"]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U furniture -d furniture"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+  migrate:
+    <<: *app
+    command: [alembic, upgrade, head]
+    restart: "no"
+    depends_on:
+      db: {condition: service_healthy}
+  api:
+    <<: *app
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready')"]
+      interval: 15s
+      retries: 3
+  worker:
+    <<: *app
+    command: [furniture, worker]
+    stop_grace_period: 10m
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+  perception:
+    <<: *model
+    profiles: [inference]
+    environment:
+      FURNITURE_ML_ROLE: perception
+      FURNITURE_ML_DEVICE: cuda
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ["${PERCEPTION_GPU:-0}"], capabilities: [gpu]}]
+  generation:
+    <<: *model
+    profiles: [inference]
+    environment:
+      FURNITURE_ML_ROLE: generation
+      FURNITURE_ML_DEVICE: cuda
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ["${GENERATION_GPU:-1}"], capabilities: [gpu]}]
+  scoring:
+    <<: *model
+    profiles: [inference]
+    environment:
+      FURNITURE_ML_ROLE: scoring
+      FURNITURE_ML_DEVICE: cpu
+      OMP_NUM_THREADS: "4"
+  evaluator:
+    image: ${VLLM_IMAGE:?Set VLLM_IMAGE to a tested vLLM image digest; see docs/DEPLOYMENT.md}
+    profiles: [inference]
+    env_file: .env
+    volumes: ["./data/models:/models:ro"]
+    ipc: private
+    shm_size: 2gb
+    command:
+      - --model
+      - /models/evaluator
+      - --served-model-name
+      - Qwen/Qwen2.5-VL-7B-Instruct
+      - --api-key
+      - ${FURNITURE_VISION_API_KEY}
+      - --max-model-len
+      - "8192"
+      - --gpu-memory-utilization
+      - "0.85"
+      - --limit-mm-per-prompt
+      - '{"image":2}'
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ["${EVALUATOR_GPU:-2}"], capabilities: [gpu]}]
+    restart: unless-stopped
+volumes:
+  postgres:
+  objects:

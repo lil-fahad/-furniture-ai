@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#254b42">
+  <title>Furniture AI · Design studio</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <section id="login-screen" class="login-screen">
+    <div class="login-art"><span class="eyebrow">FURNITURE AI</span><h1>A better space.<br>A considered design.</h1><p>Your room, understood. Your ideas, made visible.</p><div class="line-room" aria-hidden="true"><div class="line-sofa"></div><div class="line-table"></div></div></div>
+    <form id="login-form" class="login-form"><span class="brand-mark">f.</span><h2>Welcome to your studio</h2><p class="muted">Sign in with the account created by your administrator.</p><label>Username<input name="username" autocomplete="username" required minlength="3"></label><label>Password<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label><button type="submit">Open studio <span>↗</span></button><p id="login-error" class="error" role="alert"></p><small>Private projects. Original spaces.</small></form>
+  </section>
+  <div id="studio" class="studio" hidden>
+    <aside class="sidebar"><a class="brand" href="/">f.<span>Furniture AI<small>DESIGN STUDIO</small></span></a><button id="new-project" class="new-project">＋ New space</button><p class="sidebar-caption">YOUR PROJECTS</p><nav id="project-list" aria-label="Projects"></nav><div class="sidebar-bottom"><span id="account-name"></span><button id="logout" class="link-button">Sign out</button></div></aside>
+    <main>
+      <header><div><span class="eyebrow">YOUR PERSONAL DESIGN WORKSPACE</span><h1>Make room for possibility.</h1><p>From a room photo or floor plan to a considered interior.</p></div><span class="pill">Design phase</span></header>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <label class="mobile-projects">Your projects<select id="mobile-project-select"><option value="">New space</option></select></label>
+      <div class="workspace">
+        <section class="brief-panel"><div class="section-title"><span class="step">01</span><h2>Your space & brief</h2></div>
+          <form id="brief-form">
+            <label>Project name<input id="title" required maxlength="120" placeholder="e.g. Riyadh living room"></label>
+            <div class="segmented"><label><input type="radio" name="kind" value="photo" checked> Room photo</label><label><input type="radio" name="kind" value="floor_plan"> Floor plan</label></div>
+            <label class="upload-zone" id="drop-zone"><input id="image-file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><span class="upload-icon">↥</span><strong id="upload-title">Choose your room image</strong><small>JPEG, PNG, WebP or floor-plan PDF · up to 12 MB</small></label>
+            <label id="pdf-page-label" hidden>PDF page (starting at 1)<input id="pdf-page" type="number" min="1" max="20" value="1"></label>
+            <img id="source-preview" class="source-preview" alt="Uploaded source image" hidden>
+            <div class="two-columns"><label>Room type<select id="room-type"><option value="living_room">Living room</option><option value="majlis">Majlis</option><option value="bedroom">Bedroom</option><option value="office">Office</option><option value="dining_room">Dining room</option><option value="other">Other</option></select></label><label>Style<select id="style"><option value="contemporary">Contemporary</option><option value="warm minimalism">Warm minimalism</option><option value="Saudi contemporary">Saudi contemporary</option><option value="Japandi">Japandi</option><option value="classic">Classic</option><option value="industrial">Industrial</option></select></label></div>
+            <label>Design direction<textarea id="prompt" rows="3" maxlength="1000" placeholder="Natural materials, warm light, a quiet reading corner…"></textarea></label>
+            <button id="analyze" type="button" class="secondary">Analyze my space <span>↗</span></button>
+            <div class="divider"></div><div class="section-title"><span class="step">02</span><h2>Dimensions & furniture</h2></div>
+            <label>Room boundary<select id="boundary-mode"><option value="rectangle">Rectangle</option><option value="polygon">Custom polygon / reserved areas</option></select></label>
+            <div id="rectangle-fields" class="two-columns"><label>Width (m)<input id="width" type="number" min="1" max="50" step="0.01" placeholder="4.80"></label><label>Length (m)<input id="length" type="number" min="1" max="50" step="0.01" placeholder="6.30"></label></div>
+            <label id="geometry-label" hidden>Boundary, keepouts and access points (metres)<textarea id="geometry-json" rows="8" spellcheck="false" placeholder='{"boundary":[{"x":0,"y":0},{"x":5,"y":0},{"x":5,"y":4},{"x":0,"y":4}],"keepouts":[],"access_points":[]}'></textarea></label>
+            <div id="requirements" class="requirements"></div><button id="add-piece" type="button" class="link-button">＋ Add furniture category</button>
+            <details><summary>Layout and generation settings</summary><div class="two-columns"><label>Clearance (m)<input id="clearance" type="number" min="0.05" max="1.5" step="0.05" value="0.15"></label><label>Walkway width (m)<input id="walkway" type="number" min="0.5" max="1.5" step="0.05" value="0.8"></label><label>Proposals<input id="variants" type="number" min="1" max="4" value="3"></label><label>Seed<input id="seed" type="number" min="0" max="2147483647" value="42"></label></div><label>Optional edit mask<input id="mask-file" type="file" accept="image/png"><small>White = editable; black = preserved. Match the photo dimensions.</small></label></details>
+            <label class="check-label"><input id="confirmed" type="checkbox">I confirm the room dimensions and reserved areas.</label><small class="muted">Furniture uses editable concept dimensions. Photo renderings are visual interpretations; the measured plan is the dimension reference.</small>
+            <button id="generate" type="submit">Create design proposals <span>↗</span></button>
+            <button id="delete-project" type="button" class="link-button danger" hidden>Delete this project</button>
+          </form>
+        </section>
+        <section class="results-panel"><div class="result-heading"><div class="section-title"><span class="step">03</span><h2>Your design proposals</h2></div><div id="export-links" hidden><a id="export-json">JSON ↗</a><a id="export-csv">CSV ↗</a></div></div>
+          <div id="job-progress" class="job-progress" hidden><div class="progress-top"><strong id="job-state">Preparing your space</strong><button id="cancel-job" class="link-button">Cancel job</button></div><progress id="progress" max="100"></progress><p id="stage-list"></p></div>
+          <div id="empty-result" class="empty-result"><div class="empty-plan" aria-hidden="true"><div></div><span></span><i></i></div><span class="eyebrow">A NEW PERSPECTIVE STARTS HERE</span><h2>Your space, reimagined.</h2><p>Upload a photo or floor plan.<br>Set your direction. Explore the possibilities.</p><div class="empty-tags"><span>Understand</span><span>Arrange</span><span>Visualize</span></div></div>
+          <div id="results"></div><div id="analysis-results" class="analysis-results" hidden></div>
+          <div id="feedback-panel" class="feedback-panel" hidden><h3>Which proposal works better for you?</h3><div class="two-columns"><label>Prefer<select id="winner"></select></label><label>Over<select id="loser"></select></label></div><label class="check-label"><input id="training-consent" type="checkbox">Allow these preference scores to improve design ranking.</label><button id="save-feedback" class="secondary">Save preference</button></div>
+        </section>
+      </div><footer>Furniture AI <span>Designed around your space.</span></footer>
+    </main>
+  </div>
+</body>
+</html>

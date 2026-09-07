@@ -1,0 +1,3 @@
+{
+  "ranking_pair_accuracy": {"min": 0.65, "min_samples": 500}
+}

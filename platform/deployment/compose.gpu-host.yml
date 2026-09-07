@@ -1,0 +1,10 @@
+# Combine with ../compose.yml on a private GPU host. Never bind these ports to a public address.
+services:
+  perception:
+    ports: ["${MODEL_BIND_IP:?Set the GPU host private interface}:8002:8000"]
+  generation:
+    ports: ["${MODEL_BIND_IP:?Set the GPU host private interface}:8003:8000"]
+  scoring:
+    ports: ["${MODEL_BIND_IP:?Set the GPU host private interface}:8004:8000"]
+  evaluator:
+    ports: ["${MODEL_BIND_IP:?Set the GPU host private interface}:8001:8000"]
