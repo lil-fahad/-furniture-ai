@@ -99,7 +99,17 @@ def main():
         channel = cuda_channel(args.cuda)
         if not python.is_file():
             run([sys.executable, "-m", "venv", ROOT / ".venv-win"])
-        run([python, "-m", "pip", "install", "--require-hashes", "-r", ROOT / "requirements-test.lock"])
+        run(
+            [
+                python,
+                "-m",
+                "pip",
+                "install",
+                "--require-hashes",
+                "-r",
+                ROOT / "requirements-windows-base.lock",
+            ]
+        )
         run(
             [
                 python,
